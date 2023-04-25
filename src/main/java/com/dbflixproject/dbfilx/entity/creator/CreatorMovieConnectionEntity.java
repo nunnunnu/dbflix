@@ -1,5 +1,6 @@
 package com.dbflixproject.dbfilx.entity.creator;
 
+import com.dbflixproject.dbfilx.entity.enumfile.MovieRole;
 import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -29,7 +30,8 @@ public class CreatorMovieConnectionEntity {
     private MovieInfoEntity movie;
 
     @Column(name = "cmc_role")
-    private String cmcRole;
+    @Enumerated(value = EnumType.STRING)
+    private MovieRole cmcRole;
 
 }
 

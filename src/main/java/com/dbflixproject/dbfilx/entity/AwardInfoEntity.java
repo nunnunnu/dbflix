@@ -1,5 +1,6 @@
 package com.dbflixproject.dbfilx.entity;
 
+import com.dbflixproject.dbfilx.entity.enumfile.AwardCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,10 +15,14 @@ public class AwardInfoEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ai_seq")
     private Long aiSeq;
+
     @Column(name="ai_name")
     private String aiName;
+
     @Column(name="ai_year")
     private Integer aiYear;
+
     @Column(name="ai_cate")
-    private String aiCate;
+    @Enumerated(value = EnumType.STRING)
+    private AwardCategory aiCate;
 }
