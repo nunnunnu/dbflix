@@ -7,8 +7,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+
+import static org.springframework.util.StringUtils.hasText;
 
 @Getter
 @AllArgsConstructor
@@ -44,6 +47,27 @@ public class MovieInfoEntity {
     @JsonIgnore
     @JoinColumn(name="mi_com_seq")
     private CompanyInfoEntity company;
+
+    public void changeData(String name, Integer attendance, LocalDate regDt, Integer price, String country, MovieGenre genre){
+        if(hasText(name)){
+            this.miTitle = name;
+        }
+        if(attendance!=null){
+            this.miAttendance = attendance;
+        }
+        if(regDt!=null){
+            this.miRegDt = regDt;
+        }
+        if(price!=null){
+            this.miPrice = price;
+        }
+        if(hasText(country)){
+            this.miContry = country;
+        }
+        if(genre!=null){
+            this.miGenre = genre;
+        }
+    }
 }
 
 

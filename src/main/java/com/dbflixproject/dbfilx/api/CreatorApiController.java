@@ -33,7 +33,7 @@ public class CreatorApiController {
         return new ResponseEntity<>(response, response.getCode());
     }
     @PutMapping("/{seq}")
-    public ResponseEntity updateCreatorInfo(@PathVariable Long seq, @RequestBody CreatorUpdateDto data){
+    public ResponseEntity<ResponseDto> updateCreatorInfo(@PathVariable Long seq, @RequestBody CreatorUpdateDto data){
         ResponseDto response = creatorService.updateCreatorInfo(seq, data);
         return new ResponseEntity(response, response.getCode());
     }
