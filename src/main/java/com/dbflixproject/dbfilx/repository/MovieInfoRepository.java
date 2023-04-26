@@ -1,5 +1,6 @@
 package com.dbflixproject.dbfilx.repository;
 
+import com.dbflixproject.dbfilx.dto.movie.MovieRankingDto;
 import com.dbflixproject.dbfilx.entity.CompanyInfoEntity;
 import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,13 @@ public interface MovieInfoRepository extends JpaRepository<MovieInfoEntity, Long
     MovieInfoEntity findSeqCompanyjoin(@Param("seq") Long seq);
 
     List<MovieInfoEntity> findByCompany(CompanyInfoEntity company);
+
+    @Query("select m.miSeq as seq, m.miTitle as name, m.miAttendance as attendance, " +
+            "(select avg(r.riRate) from ReviewInfoEntity r where r.movie.miSeq = m.miSeq) as rate " +
+            " from MovieInfoEntity m order by m.miAttendance desc ")
+    List<MovieRankingDto> rankingMovie();
+    @Query("select m.miSeq as seq, m.miTitle as name, m.miAttendance as attendance, " +
+            "(select avg(r.riRate) from ReviewInfoEntity r where r.movie.miSeq = m.miSeq) as rate " +
+            " from MovieInfoEntity m order by 'rate' desc ")
+    List<MovieRankingDto> rateRanking();
 }

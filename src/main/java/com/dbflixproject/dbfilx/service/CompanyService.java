@@ -11,6 +11,7 @@ import com.dbflixproject.dbfilx.repository.MovieInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +22,7 @@ public class CompanyService {
     private final CompanyInfoRepository companyRepo;
     private final MovieInfoRepository movieRepo;
 
+    @Transactional
     public ResponseDto insertCompany(CompanyInsertDto data){
         if(companyRepo.existsByComBusinessNum(data.getBusinessNum())){
             return ResponseDto.builder().status(false).code(HttpStatus.BAD_REQUEST).message("이미 등록된 사업자번호").time(LocalDateTime.now()).build();
@@ -30,7 +32,7 @@ public class CompanyService {
 
         return ResponseDto.builder().status(true).code(HttpStatus.OK).message("등록 성공").time(LocalDateTime.now()).build();
     }
-
+    @Transactional(readOnly = true)
     public ResponseDto<CompanyDetailDto> getCompanyDetail(Long seq){
         CompanyInfoEntity company = companyRepo.findById(seq).orElseThrow(()-> new NotFoundCompanyException());
         List<MovieInfoEntity> movies = movieRepo.findByCompany(company);

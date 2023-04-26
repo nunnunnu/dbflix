@@ -24,7 +24,12 @@ public class UserService {
     @Transactional
     public ResponseDto userJoin(UserJoinDto data, MultipartFile file){
         if(userRepo.existsByUiId(data.getId())){
-            return ResponseDto.builder().time(LocalDateTime.now()).status(false).message("이미 등록된 아이디입니다.").build();
+            return ResponseDto.builder()
+                    .time(LocalDateTime.now())
+                    .status(false)
+                    .message("이미 등록된 아이디입니다.")
+                    .code(HttpStatus.BAD_REQUEST)
+                    .build();
         }
         UserInfoEntity user = new UserInfoEntity();
         if(file!=null){
@@ -35,7 +40,7 @@ public class UserService {
 
         userRepo.save(user);
 
-        return ResponseDto.builder().message("회원가입 성공").status(true).time(LocalDateTime.now()).build();
+        return ResponseDto.builder().message("회원가입 성공").status(true).time(LocalDateTime.now()).code(HttpStatus.OK).build();
     }
 
     @Transactional(readOnly = true)

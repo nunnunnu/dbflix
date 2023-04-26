@@ -1,10 +1,7 @@
 package com.dbflixproject.dbfilx.service;
 
 import com.dbflixproject.dbfilx.dto.ResponseDto;
-import com.dbflixproject.dbfilx.dto.movie.MovieAddCreatorDto;
-import com.dbflixproject.dbfilx.dto.movie.MovieDetailDto;
-import com.dbflixproject.dbfilx.dto.movie.MovieInsertDto;
-import com.dbflixproject.dbfilx.dto.movie.MovieUpdateDto;
+import com.dbflixproject.dbfilx.dto.movie.*;
 import com.dbflixproject.dbfilx.entity.AwardInfoEntity;
 import com.dbflixproject.dbfilx.entity.CompanyInfoEntity;
 import com.dbflixproject.dbfilx.entity.creator.CreatorInfoEntity;
@@ -89,6 +86,19 @@ public class MovieService {
         movieRepo.save(movie);
 
         return ResponseDto.builder().time(LocalDateTime.now()).message("수정 완료").code(HttpStatus.OK).status(true).build();
+    }
+
+    public ResponseDto<List<MovieRankingDto>> MovieRanking(String type){
+        List<MovieRankingDto> movies;
+        if(type.equals("attendance")){
+            movies = movieRepo.rankingMovie();
+        }else if(type.equals("rate")){
+            movies = movieRepo.rateRanking();
+        }else{
+            return new ResponseDto<List<MovieRankingDto>>("타입 오류(attendance/rate)", LocalDateTime.now(), false, null, HttpStatus.BAD_REQUEST);
+
+        }
+        return new ResponseDto<List<MovieRankingDto>>("조회성공", LocalDateTime.now(), true, movies, HttpStatus.OK);
     }
 
 

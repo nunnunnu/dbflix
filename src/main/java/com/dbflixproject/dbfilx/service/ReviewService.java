@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +28,7 @@ public class ReviewService {
     private final UserInfoRepository userRepo;
     private final MovieInfoRepository movieRepo;
 
+    @Transactional
     public ResponseDto insertReview(ReviewInsertDto data){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(data.getUserSeq(), true);
         if(user==null){
@@ -43,6 +45,7 @@ public class ReviewService {
 
         return ResponseDto.builder().status(true).code(HttpStatus.OK).message("등록 성공").time(LocalDateTime.now()).build();
     }
+    @Transactional(readOnly = true)
     public ResponseDto<Page<ReviewDetailDto>> getReview(Long seq, Pageable pageable){
         MovieInfoEntity movie = movieRepo.findById(seq).orElseThrow(() -> new NotFoundMovieException());
 

@@ -1,18 +1,33 @@
 package com.dbflixproject.dbfilx.service;
 
+import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
+import com.dbflixproject.dbfilx.repository.UserInfoRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Calendar;
+
 @Service
+@RequiredArgsConstructor
 public class FileService {
     @Value("${file.image.profile}") String profile_img_path;
+
+    private final UserInfoRepository userRepo;
 
     @Transactional
     public String saveImageFile(MultipartFile file){
@@ -39,5 +54,52 @@ public class FileService {
             e.printStackTrace();
         }
         return saveFileName;
+    }
+
+    public ResponseEntity<Resource> getImage ( @PathVariable String fileName,
+                                               HttpServletRequest request ) throws Exception
+    {
+        Path folderLocation = null;
+        String uri = null;
+        // 내보낼 파일의 이름을 만든다.
+        // 폴더 경로와 파일의 이름을 합쳐서 목표 파일의 경로를 만든다.
+
+        folderLocation = Paths.get(profile_img_path);
+        UserInfoEntity user = userRepo.findByUiFile(fileName);
+        String[] split = fileName.split("\\.");
+        String ext = split[split.length - 1];
+        String exportName = user.getUiUri() + "." + ext;
+
+        Path targetFile = folderLocation.resolve(user.getUiFile()); //폴더 경로와 파일의 이름을 합쳐서 목표 파일의 경로 생성
+        //다운로드 가능한 형태로 변환하기 위해 Resource객체 생성함
+        Resource r = null;
+        try {
+            // 일반파일 -> Url로 첨부 가능한 형태로 변환
+            r = new UrlResource(targetFile.toUri());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 첨부된 파일의 타입을 저장하기위한 변수 생성
+        String contentType = null;
+        try {
+            // 첨부할 파일의 타입 정보 산출
+            contentType = request.getServletContext().getMimeType(r.getFile().getAbsolutePath());
+            // 산출한 파일의 타입이 null 이라면
+            if (contentType == null) {
+                // 일반 파일로 처리한다.
+                contentType = "application/octet-stream";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok()
+                // 응답의 코드를 200 OK로 설정하고
+                // 산출한 타입을 응답에 맞는 형태로 변환
+                .contentType(MediaType.parseMediaType(contentType))
+                // 내보낼 내용의 타입을 설정 (파일),
+                // attachment; filename*=\""+r.getFilename()+"\" 요청한 쪽에서 다운로드 한
+                // 파일의 이름을 결정
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(exportName, "UTF-8") + "\"")
+                .body(r);
     }
 }

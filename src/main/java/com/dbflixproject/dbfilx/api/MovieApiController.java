@@ -3,12 +3,15 @@ package com.dbflixproject.dbfilx.api;
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieAddCreatorDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieInsertDto;
+import com.dbflixproject.dbfilx.dto.movie.MovieRankingDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieUpdateDto;
 import com.dbflixproject.dbfilx.service.MovieService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,6 +42,11 @@ public class MovieApiController {
     @PutMapping("/{seq}")
     public ResponseEntity<ResponseDto> movieUpdateInfo(@PathVariable Long seq, @RequestBody MovieUpdateDto data){
         ResponseDto response = movieService.updateMovie(seq, data);
+        return new ResponseEntity<>(response, response.getCode());
+    }
+    @GetMapping("/ranking/{type}")
+    public ResponseEntity<ResponseDto<List<MovieRankingDto>>> movieRanking(@PathVariable String type){
+        ResponseDto response = movieService.MovieRanking(type);
         return new ResponseEntity<>(response, response.getCode());
     }
 
