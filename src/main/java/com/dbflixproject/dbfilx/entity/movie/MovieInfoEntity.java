@@ -1,6 +1,7 @@
 package com.dbflixproject.dbfilx.entity.movie;
 
 import com.dbflixproject.dbfilx.entity.CompanyInfoEntity;
+import com.dbflixproject.dbfilx.entity.enumfile.MovieGenre;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,11 +37,13 @@ public class MovieInfoEntity {
     private String miContry;
 
     @Column(name="mi_genre")
-    private String miGenre;
+    @Enumerated(value = EnumType.STRING)
+    private MovieGenre miGenre;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name="mi_com_seq") private CompanyInfoEntity company;
+    @JoinColumn(name="mi_com_seq")
+    private CompanyInfoEntity company;
 }
 
 
