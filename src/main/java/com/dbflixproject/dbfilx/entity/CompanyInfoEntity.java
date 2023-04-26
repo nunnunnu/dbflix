@@ -19,6 +19,12 @@ public class CompanyInfoEntity {
     private String comName;
     @Column(name="com_adress")
     private String comAddress;
+
+    public CompanyInfoEntity(String businessNum, String name, String address){
+        this.comBusinessNum = businessNum;
+        this.comName = name;
+        this.comAddress = address;
+    }
 }
 
 

@@ -34,6 +34,7 @@ public class MovieService {
     private final MovieAwardConnectionRepository mAwardRepo;
     private final CreatorInfoRepository creatorRepo;
     private final AwardInfoRepository awardRepo;
+    private final ReviewInfoRepository reviewRepo;
 
     @Transactional
     public ResponseDto insertMovie(MovieInsertDto data){
@@ -51,7 +52,8 @@ public class MovieService {
         }
         List<CreatorMovieConnectionEntity> creators = cMovieRepo.findByMovie(movie);
         List<MovieAwardConnectionEntity> awards = mAwardRepo.findByMovie(movie);
-        MovieDetailDto result = new MovieDetailDto(movie, creators, awards);
+        Double rate = reviewRepo.movieRateAge(movie);
+        MovieDetailDto result = new MovieDetailDto(movie, creators, awards, rate);
         return new ResponseDto<MovieDetailDto>("조회 성공", LocalDateTime.now(), true, result, HttpStatus.OK);
     }
 
@@ -88,4 +90,6 @@ public class MovieService {
 
         return ResponseDto.builder().time(LocalDateTime.now()).message("수정 완료").code(HttpStatus.OK).status(true).build();
     }
+
+
 }

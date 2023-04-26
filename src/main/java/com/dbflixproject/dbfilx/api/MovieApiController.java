@@ -41,4 +41,5 @@ public class MovieApiController {
         ResponseDto response = movieService.updateMovie(seq, data);
         return new ResponseEntity<>(response, response.getCode());
     }
+
 }

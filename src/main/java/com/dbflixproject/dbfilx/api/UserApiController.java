@@ -23,7 +23,6 @@ public class UserApiController {
 
     @PostMapping()
     public ResponseEntity<ResponseDto> userJoin(@Valid UserJoinDto data, @Nullable MultipartFile file){
-
         return new ResponseEntity<>(userService.userJoin(data, file), HttpStatus.OK);
     }
     @GetMapping("{id}")

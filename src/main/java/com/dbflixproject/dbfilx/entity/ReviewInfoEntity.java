@@ -1,5 +1,6 @@
 package com.dbflixproject.dbfilx.entity;
 
+import com.dbflixproject.dbfilx.dto.review.ReviewInsertDto;
 import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
 import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,11 +22,11 @@ public class ReviewInfoEntity {
     @Column(name="ri_seq")
     private Long riSeq;
 
-    @Column(name="ri_created")
+    @Column(name="ri_created", updatable = false)
     private LocalDateTime riCreated;
 
     @Column(name="ri_coment")
-    private String riComent;
+    private String riComment;
 
     @Column(name="ri_rate")
     private Integer riRate;
@@ -40,6 +41,13 @@ public class ReviewInfoEntity {
     @JoinColumn(name="ri_mi_seq")
     private MovieInfoEntity movie;
 
+    public ReviewInfoEntity(ReviewInsertDto data, UserInfoEntity user, MovieInfoEntity movie) {
+        this.riCreated = LocalDateTime.now();
+        this.riComment = data.getComment();
+        this.riRate = data.getRating();
+        this.user = user;
+        this.movie = movie;
+    }
 }
 
 
