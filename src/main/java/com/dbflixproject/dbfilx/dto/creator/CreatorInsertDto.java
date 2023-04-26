@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CreatorInsertDto {
-    @NotBlank
+    @NotBlank(message = "이름을 입력해주세요")
     private String name;
-    @NotBlank
+    @NotBlank(message = "국적을 입력해주세요")
     private String country;
-    @NotBlank
+    @NotBlank(message = "나이를 입력해주세요")
     private Integer age;
-    @NotBlank
+    @NotBlank(message = "영화인 타입을 입력해주세요(배우/감독)")
     private CreatorType type;
-    @NotBlank
+    @NotBlank(message = "성별을 입력해주세요(남/여/선택안함)")
     private Gender gen;
 }

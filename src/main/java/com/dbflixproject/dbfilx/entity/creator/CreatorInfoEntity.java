@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
+
+import static org.springframework.util.StringUtils.*;
 
 @Getter
 @AllArgsConstructor
@@ -42,6 +45,21 @@ public class CreatorInfoEntity {
         this.ciRole = data.getType();
         this.ciAge = data.getAge();
         this.ciCountry = data.getCountry();
+    }
+
+    public void updateCreatorData(String name, String country, Integer age, Gender gen){
+        if(hasText(name)){
+            this.ciName = name;
+        }
+        if(hasText(country)){
+            this.ciCountry = country;
+        }
+        if(age!=null && age!=0){
+            this.ciAge = age;
+        }
+        if(gen!=null){
+            this.ciGen = gen;
+        }
     }
 }
 
