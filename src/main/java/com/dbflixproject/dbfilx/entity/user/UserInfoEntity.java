@@ -17,7 +17,7 @@ import static org.springframework.util.StringUtils.hasText;
 @NoArgsConstructor
 @Entity
 @Table(name="user_info")
-@DynamicInsert
+//@DynamicInsert
 public class UserInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,12 +47,16 @@ public class UserInfoEntity {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name="ui_gen")
-    @ColumnDefault("선택안함")
     private Gender uiGen;
 
     @Column(name="ui_status")
-    @ColumnDefault(value = "true")
     private Boolean uiStatus;
+
+    @PrePersist
+    public void prePersist(){
+        this.uiGen = this.uiGen==null?Gender.선택안함:this.uiGen;
+        this.uiStatus = this.uiStatus==null?true:this.uiStatus;
+    }
 
     public void joinData(String id, String pwd, String name, String email, LocalDate birth, Gender gen){
         this.uiId = id;

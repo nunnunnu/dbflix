@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Calendar;
 
+import com.dbflixproject.dbfilx.exception.NotFoundFileException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -57,12 +58,15 @@ public class FileService {
     public ResponseEntity<Resource> getImage ( @PathVariable String fileName,
                                                HttpServletRequest request ) throws Exception
     {
+        UserInfoEntity user = userRepo.findByUiFile(fileName);
+        if(user==null){
+            throw new NotFoundFileException();
+        }
         Path folderLocation = null;
         // 내보낼 파일의 이름을 만든다.
         // 폴더 경로와 파일의 이름을 합쳐서 목표 파일의 경로를 만든다.
 
         folderLocation = Paths.get(profile_img_path);
-        UserInfoEntity user = userRepo.findByUiFile(fileName);
         String[] split = fileName.split("\\.");
         String ext = split[split.length - 1];
         String exportName = user.getUiUri() + "." + ext;
