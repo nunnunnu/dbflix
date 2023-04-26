@@ -1,10 +1,18 @@
 package com.dbflixproject.dbfilx;
 
-import com.dbflixproject.dbfilx.entity.CompanyInfoEntity;
-import com.dbflixproject.dbfilx.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.dbflixproject.dbfilx.repository.AwardInfoRepository;
+import com.dbflixproject.dbfilx.repository.CompanyInfoRepository;
+import com.dbflixproject.dbfilx.repository.CreatorAwardConnectionRepository;
+import com.dbflixproject.dbfilx.repository.CreatorInfoRepository;
+import com.dbflixproject.dbfilx.repository.CreatorMovieConnectionRepository;
+import com.dbflixproject.dbfilx.repository.MovieAwardConnectionRepository;
+import com.dbflixproject.dbfilx.repository.MovieInfoRepository;
+import com.dbflixproject.dbfilx.repository.ReviewInfoRepository;
+import com.dbflixproject.dbfilx.repository.UserInfoRepository;
 
 @SpringBootTest
 class DemoApplicationTests {

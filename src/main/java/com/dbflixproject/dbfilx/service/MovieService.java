@@ -34,7 +34,7 @@ public class MovieService {
     private final ReviewInfoRepository reviewRepo;
 
     @Transactional
-    public ResponseDto insertMovie(MovieInsertDto data){
+    public ResponseDto<?> insertMovie(MovieInsertDto data){
         CompanyInfoEntity company = companyRepo.findById(data.getCompanySeq()).orElseThrow(()->new NotFoundCompanyException());
         MovieInfoEntity movie =
                 new MovieInfoEntity(null, data.getAttendance(), data.getRegDt(), data.getName(), data.getPrice(), data.getCountry(), data.getGenre(), company);
@@ -55,7 +55,7 @@ public class MovieService {
     }
 
     @Transactional
-    public ResponseDto addCreator(MovieAddCreatorDto data){
+    public ResponseDto<?> addCreator(MovieAddCreatorDto data){
         MovieInfoEntity movie = movieRepo.findById(data.getMovieSeq()).orElseThrow(()->new NotFoundMovieException());
         CreatorInfoEntity creator = creatorRepo.findById(data.getCreatorSeq()).orElseThrow(()->new NotFoundCreatorException());
         CreatorMovieConnectionEntity connect = new CreatorMovieConnectionEntity(null, creator, movie, data.getRole());
@@ -66,7 +66,7 @@ public class MovieService {
         return ResponseDto.builder().status(true).code(HttpStatus.OK).message("영화인 추가 성공").time(LocalDateTime.now()).build();
     }
     @Transactional
-    public ResponseDto addAward(Long movieSeq, Long awardSeq){
+    public ResponseDto<?> addAward(Long movieSeq, Long awardSeq){
         MovieInfoEntity movie = movieRepo.findById(movieSeq).orElseThrow(()->new NotFoundMovieException());
         AwardInfoEntity award = awardRepo.findByAiSeqAndAiCate(awardSeq, AwardCategory.영화);
         if(award==null){
@@ -80,7 +80,7 @@ public class MovieService {
         return ResponseDto.builder().time(LocalDateTime.now()).message("등록완료").code(HttpStatus.OK).status(true).build();
     }
     @Transactional
-    public ResponseDto updateMovie(Long seq, MovieUpdateDto data){
+    public ResponseDto<?> updateMovie(Long seq, MovieUpdateDto data){
         MovieInfoEntity movie = movieRepo.findById(seq).orElseThrow(()->new NotFoundMovieException());
         movie.changeData(data.getName(), data.getAttendance(), data.getRegDt(), data.getPrice(), data.getCounty(), data.getGenre());
         movieRepo.save(movie);

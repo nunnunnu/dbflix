@@ -23,7 +23,7 @@ public class CompanyService {
     private final MovieInfoRepository movieRepo;
 
     @Transactional
-    public ResponseDto insertCompany(CompanyInsertDto data){
+    public ResponseDto<?> insertCompany(CompanyInsertDto data){
         if(companyRepo.existsByComBusinessNum(data.getBusinessNum())){
             return ResponseDto.builder().status(false).code(HttpStatus.BAD_REQUEST).message("이미 등록된 사업자번호").time(LocalDateTime.now()).build();
         }

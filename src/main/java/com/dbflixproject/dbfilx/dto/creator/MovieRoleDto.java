@@ -2,7 +2,7 @@ package com.dbflixproject.dbfilx.dto.creator;
 
 import com.dbflixproject.dbfilx.entity.creator.CreatorMovieConnectionEntity;
 import com.dbflixproject.dbfilx.entity.enumfile.MovieRole;
-import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

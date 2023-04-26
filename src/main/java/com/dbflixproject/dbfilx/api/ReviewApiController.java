@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewApiController {
     private final ReviewService reviewService;
     @PostMapping()
-    public ResponseEntity<ResponseDto> insertReview(@RequestBody @Valid ReviewInsertDto data){
-        ResponseDto response = reviewService.insertReview(data);
+    public ResponseEntity<ResponseDto<?>> insertReview(@RequestBody @Valid ReviewInsertDto data){
+        ResponseDto<?> response = reviewService.insertReview(data);
         return new ResponseEntity<>(response, response.getCode());
     }
 

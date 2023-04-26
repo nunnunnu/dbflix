@@ -1,5 +1,12 @@
 package com.dbflixproject.dbfilx.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.creator.CreatorDetailDto;
 import com.dbflixproject.dbfilx.dto.creator.CreatorInsertDto;
@@ -14,14 +21,8 @@ import com.dbflixproject.dbfilx.repository.AwardInfoRepository;
 import com.dbflixproject.dbfilx.repository.CreatorAwardConnectionRepository;
 import com.dbflixproject.dbfilx.repository.CreatorInfoRepository;
 import com.dbflixproject.dbfilx.repository.CreatorMovieConnectionRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class CreatorService {
     private final AwardInfoRepository awardRepo;
 
     @Transactional
-    public ResponseDto saveCreator(CreatorInsertDto data){
+    public ResponseDto<?> saveCreator(CreatorInsertDto data){
         CreatorInfoEntity creator = new CreatorInfoEntity(data);
         creatorRepo.save(creator);
         return ResponseDto.builder().code(HttpStatus.OK).status(true).time(LocalDateTime.now()).message("등록성공").build();
@@ -48,7 +49,7 @@ public class CreatorService {
         return new ResponseDto<CreatorDetailDto>("조회성공", LocalDateTime.now(), true, result, HttpStatus.OK);
     }
     @Transactional
-    public ResponseDto addCreatorAward(Long creatorSeq, Long awardSeq){
+    public ResponseDto<?> addCreatorAward(Long creatorSeq, Long awardSeq){
         CreatorInfoEntity creator = creatorRepo.findById(creatorSeq).orElseThrow(()->new NotFoundCreatorException());
         AwardInfoEntity award = awardRepo.findById(awardSeq).orElseThrow(()->new NotFoundAwardException());
         if(!award.getAiCate().toString().equals(creator.getCiRole().toString())){
@@ -69,7 +70,7 @@ public class CreatorService {
         return ResponseDto.builder().message("등록성공").status(true).time(LocalDateTime.now()).code(HttpStatus.OK).build();
     }
     @Transactional
-    public ResponseDto updateCreatorInfo(Long seq, CreatorUpdateDto data){
+    public ResponseDto<?> updateCreatorInfo(Long seq, CreatorUpdateDto data){
         CreatorInfoEntity creator = creatorRepo.findById(seq).orElseThrow(()->new NotFoundCreatorException());
         creator.updateCreatorData(data.getName(), data.getCountry(), data.getAge(), data.getGen());
         creatorRepo.save(creator);

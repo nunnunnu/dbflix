@@ -1,5 +1,13 @@
 package com.dbflixproject.dbfilx.service;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.review.ReviewDetailDto;
 import com.dbflixproject.dbfilx.dto.review.ReviewInsertDto;
@@ -11,15 +19,8 @@ import com.dbflixproject.dbfilx.exception.NotFoundMovieException;
 import com.dbflixproject.dbfilx.repository.MovieInfoRepository;
 import com.dbflixproject.dbfilx.repository.ReviewInfoRepository;
 import com.dbflixproject.dbfilx.repository.UserInfoRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class ReviewService {
     private final MovieInfoRepository movieRepo;
 
     @Transactional
-    public ResponseDto insertReview(ReviewInsertDto data){
+    public ResponseDto<?> insertReview(ReviewInsertDto data){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(data.getUserSeq(), true);
         if(user==null){
             throw new NotFoundMemberException();

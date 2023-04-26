@@ -1,15 +1,22 @@
 package com.dbflixproject.dbfilx.entity.creator;
 
+import static org.springframework.util.StringUtils.hasText;
+
 import com.dbflixproject.dbfilx.dto.creator.CreatorInsertDto;
 import com.dbflixproject.dbfilx.entity.enumfile.CreatorType;
 import com.dbflixproject.dbfilx.entity.enumfile.Gender;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.StringUtils;
-
-import static org.springframework.util.StringUtils.*;
 
 @Getter
 @AllArgsConstructor

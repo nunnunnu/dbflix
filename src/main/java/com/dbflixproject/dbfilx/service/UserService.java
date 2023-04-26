@@ -22,7 +22,7 @@ public class UserService {
     private final FileService fileService;
 
     @Transactional
-    public ResponseDto userJoin(UserJoinDto data, MultipartFile file){
+    public ResponseDto<?> userJoin(UserJoinDto data, MultipartFile file){
         if(userRepo.existsByUiId(data.getId())){
             return ResponseDto.builder()
                     .time(LocalDateTime.now())
@@ -54,7 +54,7 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseDto updateUserInfo(Long id, UserUpdateDto data, MultipartFile file){
+    public ResponseDto<?> updateUserInfo(Long id, UserUpdateDto data, MultipartFile file){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true);
         if(user==null){
             throw new NotFoundMemberException();
@@ -72,7 +72,7 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseDto dropUser(Long id){
+    public ResponseDto<?> dropUser(Long id){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true);
         if(user==null){
             throw new NotFoundMemberException();

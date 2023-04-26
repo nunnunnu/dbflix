@@ -1,9 +1,12 @@
 package com.dbflixproject.dbfilx.service;
 
-import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
-import com.dbflixproject.dbfilx.repository.UserInfoRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -15,12 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Calendar;
+import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
+import com.dbflixproject.dbfilx.repository.UserInfoRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -36,10 +38,6 @@ public class FileService {
         String originFileName = file.getOriginalFilename();
         String[] split = originFileName.split(("\\.")); //.을 기준으로 나눔
         String ext = split[split.length - 1]; //확장자
-        String fileName = "";
-        for (int i = 0; i < split.length - 1; i++) {
-            fileName += split[i]; //원래 split[i]+"." 이렇게 해줘야함
-        }
         String saveFileName = "profile_"; //보통 원본 이름을 저장하는것이아니라 시간대를 입력함
         Calendar c = Calendar.getInstance();
         saveFileName += c.getTimeInMillis() + "." + ext; // todo_161310135.png 이런식으로 저장됨
@@ -60,7 +58,6 @@ public class FileService {
                                                HttpServletRequest request ) throws Exception
     {
         Path folderLocation = null;
-        String uri = null;
         // 내보낼 파일의 이름을 만든다.
         // 폴더 경로와 파일의 이름을 합쳐서 목표 파일의 경로를 만든다.
 
