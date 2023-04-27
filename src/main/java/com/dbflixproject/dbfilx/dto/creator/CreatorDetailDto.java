@@ -1,6 +1,6 @@
 package com.dbflixproject.dbfilx.dto.creator;
 
-import com.dbflixproject.dbfilx.dto.AwardInfoDto;
+import com.dbflixproject.dbfilx.dto.award.AwardInfoDto;
 import com.dbflixproject.dbfilx.entity.creator.CreatorAwardConnectionEntity;
 import com.dbflixproject.dbfilx.entity.creator.CreatorInfoEntity;
 import com.dbflixproject.dbfilx.entity.creator.CreatorMovieConnectionEntity;

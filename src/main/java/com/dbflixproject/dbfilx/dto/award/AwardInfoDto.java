@@ -1,4 +1,4 @@
-package com.dbflixproject.dbfilx.dto;
+package com.dbflixproject.dbfilx.dto.award;
 
 import com.dbflixproject.dbfilx.entity.AwardInfoEntity;
 import com.dbflixproject.dbfilx.entity.enumfile.AwardCategory;
