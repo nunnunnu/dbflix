@@ -1,13 +1,7 @@
 package com.dbflixproject.dbfilx.api;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.creator.CreatorDetailDto;
@@ -41,6 +35,11 @@ public class CreatorApiController {
     @PutMapping("/{seq}")
     public ResponseEntity<ResponseDto<?>> updateCreatorInfo(@PathVariable Long seq, @RequestBody CreatorUpdateDto data){
         ResponseDto<?> response = creatorService.updateCreatorInfo(seq, data);
+        return new ResponseEntity<>(response, response.getCode());
+    }
+    @DeleteMapping("/{seq}")
+    public ResponseEntity<ResponseDto<?>> deleteCreator(@PathVariable Long seq){
+        ResponseDto<?> response = creatorService.deleteCreator(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
 

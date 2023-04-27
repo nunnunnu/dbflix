@@ -40,4 +40,9 @@ public class ReviewApiController {
         ResponseDto<List<FavoriteGenreDto>> response = reviewService.myFavoriteGenre(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
+    @DeleteMapping("/{seq}")
+    public ResponseEntity<ResponseDto<?>> deleteReview(@PathVariable Long seq){
+        ResponseDto<?> response = reviewService.deleteReview(seq);
+        return new ResponseEntity<>(response, response.getCode());
+    }
 }

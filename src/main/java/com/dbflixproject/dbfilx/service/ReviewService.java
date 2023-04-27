@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.dbflixproject.dbfilx.dto.review.FavoriteGenreDto;
+import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -62,5 +63,10 @@ public class ReviewService {
         return new ResponseDto<>("조회성공", LocalDateTime.now(), true, result, HttpStatus.OK);
 
     }
-
+    @Transactional
+    public ResponseDto<?> deleteReview(Long seq) {
+        ReviewInfoEntity review = reviewRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("리뷰"));
+        reviewRepo.delete(review);
+        return ResponseDto.builder().message("삭제성공").time(LocalDateTime.now()).status(true).code(HttpStatus.OK).build();
+    }
 }

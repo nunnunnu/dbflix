@@ -24,6 +24,4 @@ public interface ReviewInfoRepository extends JpaRepository<ReviewInfoEntity, Lo
             "where r.user.uiSeq=:seq" +
             " group by m.miGenre order by rate desc")
     List<FavoriteGenreDto> favoriteGenre(@Param("seq") Long seq);
-
-
 }

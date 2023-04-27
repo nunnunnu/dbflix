@@ -3,6 +3,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
+
+import static org.springframework.util.StringUtils.hasText;
 
 @Getter
 @AllArgsConstructor
@@ -24,6 +27,18 @@ public class CompanyInfoEntity {
         this.comBusinessNum = businessNum;
         this.comName = name;
         this.comAddress = address;
+    }
+
+    public void updateData(String businessNum, String name, String address){
+        if(hasText(businessNum)){
+            this.comBusinessNum = businessNum;
+        }
+        if(hasText(name)){
+            this.comName = name;
+        }
+        if(hasText(address)){
+            this.comAddress = address;
+        }
     }
 }
 

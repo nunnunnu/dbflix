@@ -3,9 +3,11 @@ package com.dbflixproject.dbfilx.service;
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyDetailDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyInsertDto;
+import com.dbflixproject.dbfilx.dto.company.CompanyUpdateDto;
 import com.dbflixproject.dbfilx.entity.CompanyInfoEntity;
 import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
 import com.dbflixproject.dbfilx.exception.NotFoundCompanyException;
+import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
 import com.dbflixproject.dbfilx.repository.CompanyInfoRepository;
 import com.dbflixproject.dbfilx.repository.MovieInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +43,18 @@ public class CompanyService {
 
         return new ResponseDto<CompanyDetailDto>("조회성공",LocalDateTime.now(),true,result,HttpStatus.OK);
 
+    }
+    @Transactional
+    public ResponseDto<?> deleteCompany(Long seq) {
+        CompanyInfoEntity company = companyRepo.findById(seq).orElseThrow(()-> new NotFoundCompanyException());
+        companyRepo.delete(company);
+        return ResponseDto.builder().code(HttpStatus.OK).status(true).time(LocalDateTime.now()).message("삭제성공").build();
+    }
+    @Transactional
+    public ResponseDto<?> updateCompany(Long seq, CompanyUpdateDto data){
+        CompanyInfoEntity company = companyRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("제작사"));
+        company.updateData(data.getBusinessNum(),data.getName(),data.getAddress());
+        companyRepo.save(company);
+        return ResponseDto.builder().code(HttpStatus.OK).status(true).time(LocalDateTime.now()).message("수정성공").build();
     }
 }

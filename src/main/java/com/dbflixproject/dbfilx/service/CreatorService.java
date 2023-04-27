@@ -75,6 +75,13 @@ public class CreatorService {
         creator.updateCreatorData(data.getName(), data.getCountry(), data.getAge(), data.getGen());
         creatorRepo.save(creator);
 
-        return ResponseDto.builder().message("수정 성공").time(LocalDateTime.now()).status(false).code(HttpStatus.OK).build();
+        return ResponseDto.builder().message("수정 성공").time(LocalDateTime.now()).status(true).code(HttpStatus.OK).build();
+    }
+
+    public ResponseDto<?> deleteCreator(Long seq) {
+        CreatorInfoEntity creator = creatorRepo.findById(seq).orElseThrow(()->new NotFoundCreatorException());
+        creatorRepo.delete(creator);
+
+        return ResponseDto.builder().message("삭제 성공").time(LocalDateTime.now()).status(true).code(HttpStatus.OK).build();
     }
 }
