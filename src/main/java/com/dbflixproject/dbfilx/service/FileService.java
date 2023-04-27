@@ -37,17 +37,13 @@ public class FileService {
         Path folderLocation = Paths.get(profile_img_path);
 
         String originFileName = file.getOriginalFilename();
-        String[] split = originFileName.split(("\\.")); //.을 기준으로 나눔
-        String ext = split[split.length - 1]; //확장자
-        String saveFileName = "profile_"; //보통 원본 이름을 저장하는것이아니라 시간대를 입력함
+        String[] split = originFileName.split(("\\."));
+        String ext = split[split.length - 1];
+        String saveFileName = "profile_";
         Calendar c = Calendar.getInstance();
-        saveFileName += c.getTimeInMillis() + "." + ext; // todo_161310135.png 이런식으로 저장됨
-
-        Path targetFile = folderLocation.resolve(saveFileName); //폴더 경로와 파일의 이름을 합쳐서 목표 파일의 경로 생성
+        saveFileName += c.getTimeInMillis() + "." + ext;
+        Path targetFile = folderLocation.resolve(saveFileName);
         try {
-            //Files는 파일 처리에 대한 유틸리티 클래스
-            //copy - 복사, file.getInputStream() - 파일을 열어서 파일의 내용을 읽는 준비
-            //targetFile 경로로, standardCopyOption.REPLACE_EXISTING - 같은 파일이 있다면 덮어쓰기.
             Files.copy(file.getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,43 +59,30 @@ public class FileService {
             throw new NotFoundFileException();
         }
         Path folderLocation = null;
-        // 내보낼 파일의 이름을 만든다.
-        // 폴더 경로와 파일의 이름을 합쳐서 목표 파일의 경로를 만든다.
 
         folderLocation = Paths.get(profile_img_path);
         String[] split = fileName.split("\\.");
         String ext = split[split.length - 1];
         String exportName = user.getUiUri() + "." + ext;
 
-        Path targetFile = folderLocation.resolve(user.getUiFile()); //폴더 경로와 파일의 이름을 합쳐서 목표 파일의 경로 생성
-        //다운로드 가능한 형태로 변환하기 위해 Resource객체 생성함
+        Path targetFile = folderLocation.resolve(user.getUiFile());
         Resource r = null;
         try {
-            // 일반파일 -> Url로 첨부 가능한 형태로 변환
             r = new UrlResource(targetFile.toUri());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // 첨부된 파일의 타입을 저장하기위한 변수 생성
         String contentType = null;
         try {
-            // 첨부할 파일의 타입 정보 산출
             contentType = request.getServletContext().getMimeType(r.getFile().getAbsolutePath());
-            // 산출한 파일의 타입이 null 이라면
             if (contentType == null) {
-                // 일반 파일로 처리한다.
                 contentType = "application/octet-stream";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ResponseEntity.ok()
-                // 응답의 코드를 200 OK로 설정하고
-                // 산출한 타입을 응답에 맞는 형태로 변환
                 .contentType(MediaType.parseMediaType(contentType))
-                // 내보낼 내용의 타입을 설정 (파일),
-                // attachment; filename*=\""+r.getFilename()+"\" 요청한 쪽에서 다운로드 한
-                // 파일의 이름을 결정
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(exportName, "UTF-8") + "\"")
                 .body(r);
     }

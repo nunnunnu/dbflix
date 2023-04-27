@@ -31,7 +31,10 @@ public class ReviewInfoEntity {
     @Column(name="ri_rate")
     private Integer riRate;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(
+            fetch=FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
     @JsonIgnore
     @JoinColumn(name="ri_ui_seq")
     private UserInfoEntity user;

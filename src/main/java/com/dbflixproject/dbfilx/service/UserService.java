@@ -1,6 +1,7 @@
 package com.dbflixproject.dbfilx.service;
 
 import com.dbflixproject.dbfilx.dto.ResponseDto;
+import com.dbflixproject.dbfilx.dto.review.ReviewDetailDto;
 import com.dbflixproject.dbfilx.dto.user.UserDetailDto;
 import com.dbflixproject.dbfilx.dto.user.UserJoinDto;
 import com.dbflixproject.dbfilx.dto.user.UserUpdateDto;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -82,5 +85,21 @@ public class UserService {
 
         return ResponseDto.builder().status(true).message("탈퇴 성공").time(LocalDateTime.now()).code(HttpStatus.OK).build();
     }
+
+    @Transactional(readOnly = true)
+    public ResponseDto<List<ReviewDetailDto>> myReview(Long seq){
+        UserInfoEntity user = userRepo.findSeqReviewJoin(seq, true);
+        if(user==null){
+            throw new NotFoundMemberException();
+        }
+        if(user.getReview().size()==0){
+            return new ResponseDto<>("등록된 리뷰 없음", LocalDateTime.now(), false, null, HttpStatus.OK);
+        }
+        List<ReviewDetailDto> reviewDto = user.getReview().stream().map(ReviewDetailDto::new).toList();
+
+        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, reviewDto, HttpStatus.OK);
+    }
+
+
 
 }

@@ -49,5 +49,10 @@ public class MovieApiController {
         ResponseDto<List<MovieRankingDto>> response = movieService.MovieRanking(type);
         return new ResponseEntity<>(response, response.getCode());
     }
+    @DeleteMapping("/{seq}")
+    public ResponseEntity<ResponseDto<?>> movieDelete(@PathVariable Long seq){
+        ResponseDto<?> response = movieService.movieDelete(seq);
+        return new ResponseEntity<>(response, response.getCode());
+    }
 
 }

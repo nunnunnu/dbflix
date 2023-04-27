@@ -15,6 +15,7 @@ import com.dbflixproject.dbfilx.exception.NotFoundCreatorException;
 import com.dbflixproject.dbfilx.exception.NotFoundMovieException;
 import com.dbflixproject.dbfilx.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +52,7 @@ public class MovieService {
         List<MovieAwardConnectionEntity> awards = mAwardRepo.findByMovie(movie);
         Double rate = reviewRepo.movieRateAge(movie);
         MovieDetailDto result = new MovieDetailDto(movie, creators, awards, rate);
-        return new ResponseDto<MovieDetailDto>("조회 성공", LocalDateTime.now(), true, result, HttpStatus.OK);
+        return new ResponseDto<>("조회 성공", LocalDateTime.now(), true, result, HttpStatus.OK);
     }
 
     @Transactional
@@ -87,19 +88,20 @@ public class MovieService {
 
         return ResponseDto.builder().time(LocalDateTime.now()).message("수정 완료").code(HttpStatus.OK).status(true).build();
     }
-
+    @Transactional(readOnly = true)
     public ResponseDto<List<MovieRankingDto>> MovieRanking(String type){
-        List<MovieRankingDto> movies;
-        if(type.equals("attendance")){
-            movies = movieRepo.rankingMovie();
-        }else if(type.equals("rate")){
-            movies = movieRepo.rateRanking();
-        }else{
-            return new ResponseDto<List<MovieRankingDto>>("타입 오류(attendance/rate)", LocalDateTime.now(), false, null, HttpStatus.BAD_REQUEST);
-
+        if(!type.equals("attendance") && !type.equals("rate")){
+            return new ResponseDto<>("타입 오류(attendance/rate)", LocalDateTime.now(), false, null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseDto<List<MovieRankingDto>>("조회성공", LocalDateTime.now(), true, movies, HttpStatus.OK);
+        List<MovieRankingDto> movies = movieRepo.rateRanking(Sort.by(type).descending());
+
+        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, movies, HttpStatus.OK);
     }
 
+    public ResponseDto<?> movieDelete(Long seq) {
+        MovieInfoEntity movie = movieRepo.findById(seq).orElseThrow(()-> new NotFoundMovieException());
+        movieRepo.delete(movie);
 
+        return ResponseDto.builder().message("삭제성공").status(true).time(LocalDateTime.now()).code(HttpStatus.OK).build();
+    }
 }

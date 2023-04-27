@@ -1,5 +1,6 @@
 package com.dbflixproject.dbfilx.entity.user;
 
+import com.dbflixproject.dbfilx.entity.ReviewInfoEntity;
 import com.dbflixproject.dbfilx.entity.enumfile.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
 
@@ -51,6 +54,9 @@ public class UserInfoEntity {
 
     @Column(name="ui_status")
     private Boolean uiStatus;
+
+    @OneToMany(mappedBy = "user")
+    private List<ReviewInfoEntity> review = new ArrayList<>();
 
     @PrePersist
     public void prePersist(){

@@ -1,7 +1,9 @@
 package com.dbflixproject.dbfilx.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.dbflixproject.dbfilx.dto.review.FavoriteGenreDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -52,7 +54,13 @@ public class ReviewService {
 
         Page<ReviewInfoEntity> reviewEntity = reviewRepo.findByMovie(movie, pageable);
         Page<ReviewDetailDto> result = reviewEntity.map(r->new ReviewDetailDto(r));
-        return new ResponseDto<Page<ReviewDetailDto>>("조회성공", LocalDateTime.now(), true, result, HttpStatus.OK);
+        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, result, HttpStatus.OK);
+    }
+    @Transactional(readOnly = true)
+    public ResponseDto<List<FavoriteGenreDto>> myFavoriteGenre(Long seq){
+        List<FavoriteGenreDto> result = reviewRepo.favoriteGenre(seq);
+        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, result, HttpStatus.OK);
+
     }
 
 }
