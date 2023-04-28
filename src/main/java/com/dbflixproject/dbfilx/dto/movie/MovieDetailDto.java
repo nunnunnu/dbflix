@@ -36,7 +36,7 @@ public class MovieDetailDto {
         this.attendance = entity.getMiAttendance();
         this.regDt = entity.getMiRegDt();
         this.price = entity.getMiPrice();
-        this.country = entity.getMiContry();
+        this.country = entity.getMiCountry();
         this.genre = entity.getMiGenre();
         this.company = new CompanyInfoDto(entity.getCompany());
         this.rate = rate;

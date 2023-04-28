@@ -17,8 +17,6 @@ import com.dbflixproject.dbfilx.dto.review.ReviewInsertDto;
 import com.dbflixproject.dbfilx.entity.ReviewInfoEntity;
 import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
 import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
-import com.dbflixproject.dbfilx.exception.NotFoundMemberException;
-import com.dbflixproject.dbfilx.exception.NotFoundMovieException;
 import com.dbflixproject.dbfilx.repository.MovieInfoRepository;
 import com.dbflixproject.dbfilx.repository.ReviewInfoRepository;
 import com.dbflixproject.dbfilx.repository.UserInfoRepository;
@@ -36,9 +34,9 @@ public class ReviewService {
     public ResponseDto<?> insertReview(ReviewInsertDto data){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(data.getUserSeq(), true);
         if(user==null){
-            throw new NotFoundMemberException();
+            throw new NotFoundEntityException("회원");
         }
-        MovieInfoEntity movie = movieRepo.findById(data.getMovieSeq()).orElseThrow(()->new NotFoundMovieException());
+        MovieInfoEntity movie = movieRepo.findById(data.getMovieSeq()).orElseThrow(()->new NotFoundEntityException("영화"));
 
         if(reviewRepo.existsByUserAndMovie(user, movie)){
             return ResponseDto.builder().time(LocalDateTime.now()).message("이미 등록된 리뷰가 존재합니다.").code(HttpStatus.BAD_REQUEST).status(false).build();
@@ -47,26 +45,40 @@ public class ReviewService {
         ReviewInfoEntity review = new ReviewInfoEntity(data, user, movie);
         reviewRepo.save(review);
 
-        return ResponseDto.builder().status(true).code(HttpStatus.OK).message("등록 성공").time(LocalDateTime.now()).build();
+        return new ResponseDto.SuccessBuilder<>("삭제 성공", null).build();
     }
     @Transactional(readOnly = true)
     public ResponseDto<Page<ReviewDetailDto>> getReview(Long seq, Pageable pageable){
-        MovieInfoEntity movie = movieRepo.findById(seq).orElseThrow(() -> new NotFoundMovieException());
+        MovieInfoEntity movie = movieRepo.findById(seq).orElseThrow(() -> new NotFoundEntityException("영화"));
 
         Page<ReviewInfoEntity> reviewEntity = reviewRepo.findByMovie(movie, pageable);
-        Page<ReviewDetailDto> result = reviewEntity.map(r->new ReviewDetailDto(r));
-        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, result, HttpStatus.OK);
+        Page<ReviewDetailDto> result = reviewEntity.map(ReviewDetailDto::new);
+        return new ResponseDto.SuccessBuilder<>("조회 성공", result).build();
     }
     @Transactional(readOnly = true)
     public ResponseDto<List<FavoriteGenreDto>> myFavoriteGenre(Long seq){
         List<FavoriteGenreDto> result = reviewRepo.favoriteGenre(seq);
-        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, result, HttpStatus.OK);
+        return new ResponseDto.SuccessBuilder<>("조회 성공", result).build();
 
     }
     @Transactional
     public ResponseDto<?> deleteReview(Long seq) {
         ReviewInfoEntity review = reviewRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("리뷰"));
         reviewRepo.delete(review);
-        return ResponseDto.builder().message("삭제성공").time(LocalDateTime.now()).status(true).code(HttpStatus.OK).build();
+        return new ResponseDto.SuccessBuilder<>("삭제 성공", null).build();
+    }
+    @Transactional(readOnly = true)
+    public ResponseDto<List<ReviewDetailDto>> myReview(Long seq){
+        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(seq, true);
+        if(user==null){
+            throw new NotFoundEntityException("회원");
+        }
+        List<ReviewInfoEntity> review = reviewRepo.findByUser(user);
+//        if(review.size()==0){
+//            return new ResponseDto<>("등록된 리뷰 없음", LocalDateTime.now(), false, null, HttpStatus.OK);
+//        }
+        List<ReviewDetailDto> reviewDto = review.stream().map(ReviewDetailDto::new).toList();
+
+        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, reviewDto, HttpStatus.OK);
     }
 }

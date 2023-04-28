@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -55,8 +53,8 @@ public class UserInfoEntity {
     @Column(name="ui_status")
     private Boolean uiStatus;
 
-    @OneToMany(mappedBy = "user")
-    private List<ReviewInfoEntity> review = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<ReviewInfoEntity> review = new ArrayList<>();
 
     @PrePersist
     public void prePersist(){

@@ -6,7 +6,6 @@ import com.dbflixproject.dbfilx.dto.company.CompanyInsertDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyUpdateDto;
 import com.dbflixproject.dbfilx.entity.CompanyInfoEntity;
 import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
-import com.dbflixproject.dbfilx.exception.NotFoundCompanyException;
 import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
 import com.dbflixproject.dbfilx.repository.CompanyInfoRepository;
 import com.dbflixproject.dbfilx.repository.MovieInfoRepository;
@@ -27,34 +26,34 @@ public class CompanyService {
     @Transactional
     public ResponseDto<?> insertCompany(CompanyInsertDto data){
         if(companyRepo.existsByComBusinessNum(data.getBusinessNum())){
-            return ResponseDto.builder().status(false).code(HttpStatus.BAD_REQUEST).message("이미 등록된 사업자번호").time(LocalDateTime.now()).build();
+            return new ResponseDto.FailBuilder<>("이미 등록된 사업자 번호").build();
         }
         CompanyInfoEntity company = new CompanyInfoEntity(data.getBusinessNum(),data.getName(),data.getAddress());
         companyRepo.save(company);
 
-        return ResponseDto.builder().status(true).code(HttpStatus.OK).message("등록 성공").time(LocalDateTime.now()).build();
+        return new ResponseDto.SuccessBuilder<>("등록 성공", null).build();
     }
     @Transactional(readOnly = true)
     public ResponseDto<CompanyDetailDto> getCompanyDetail(Long seq){
-        CompanyInfoEntity company = companyRepo.findById(seq).orElseThrow(()-> new NotFoundCompanyException());
+        CompanyInfoEntity company = companyRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("제작사"));
         List<MovieInfoEntity> movies = movieRepo.findByCompany(company);
 
         CompanyDetailDto result = new CompanyDetailDto(company, movies);
 
-        return new ResponseDto<CompanyDetailDto>("조회성공",LocalDateTime.now(),true,result,HttpStatus.OK);
+        return new ResponseDto.SuccessBuilder<>("조회 성공", result).build();
 
     }
     @Transactional
     public ResponseDto<?> deleteCompany(Long seq) {
-        CompanyInfoEntity company = companyRepo.findById(seq).orElseThrow(()-> new NotFoundCompanyException());
+        CompanyInfoEntity company = companyRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("제작사"));
         companyRepo.delete(company);
-        return ResponseDto.builder().code(HttpStatus.OK).status(true).time(LocalDateTime.now()).message("삭제성공").build();
+        return new ResponseDto.SuccessBuilder<>("삭제 성공", null).build();
     }
     @Transactional
     public ResponseDto<?> updateCompany(Long seq, CompanyUpdateDto data){
         CompanyInfoEntity company = companyRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("제작사"));
         company.updateData(data.getBusinessNum(),data.getName(),data.getAddress());
         companyRepo.save(company);
-        return ResponseDto.builder().code(HttpStatus.OK).status(true).time(LocalDateTime.now()).message("수정성공").build();
+        return new ResponseDto.SuccessBuilder<>("수정 성공", null).build();
     }
 }

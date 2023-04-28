@@ -11,6 +11,6 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> 
     UserInfoEntity findByUiSeqAndUiStatus(Long seq, Boolean status);
     UserInfoEntity findByUiFile(String fileName);
 
-    @Query("select u from UserInfoEntity u left join fetch u.review where u.uiSeq=:seq and u.uiStatus=:status")
-    UserInfoEntity findSeqReviewJoin(@Param("seq") Long seq, @Param("status") boolean status);
+//    @Query("select u from UserInfoEntity u left join fetch u.review where u.uiSeq=:seq and u.uiStatus=:status")
+//    UserInfoEntity findSeqReviewJoin(@Param("seq") Long seq, @Param("status") boolean status);
 }

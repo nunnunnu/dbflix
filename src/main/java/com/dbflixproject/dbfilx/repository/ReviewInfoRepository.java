@@ -6,6 +6,7 @@ import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
 import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +25,6 @@ public interface ReviewInfoRepository extends JpaRepository<ReviewInfoEntity, Lo
             "where r.user.uiSeq=:seq" +
             " group by m.miGenre order by rate desc")
     List<FavoriteGenreDto> favoriteGenre(@Param("seq") Long seq);
+    @EntityGraph(attributePaths = {"movie"})
+    List<ReviewInfoEntity> findByUser(UserInfoEntity user);
 }

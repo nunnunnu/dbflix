@@ -5,8 +5,9 @@ import com.dbflixproject.dbfilx.dto.review.ReviewDetailDto;
 import com.dbflixproject.dbfilx.dto.user.UserDetailDto;
 import com.dbflixproject.dbfilx.dto.user.UserJoinDto;
 import com.dbflixproject.dbfilx.dto.user.UserUpdateDto;
+import com.dbflixproject.dbfilx.entity.ReviewInfoEntity;
 import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
-import com.dbflixproject.dbfilx.exception.NotFoundMemberException;
+import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
 import com.dbflixproject.dbfilx.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +50,7 @@ public class UserService {
     public ResponseDto<UserDetailDto> getUserDetail(Long id){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true);
         if(user==null){
-            throw new NotFoundMemberException();
+            throw new NotFoundEntityException("회원");
         }
         UserDetailDto userDto = new UserDetailDto(user);
         return new ResponseDto<>("조회성공", LocalDateTime.now(), true, userDto, HttpStatus.OK);
@@ -60,7 +60,7 @@ public class UserService {
     public ResponseDto<?> updateUserInfo(Long id, UserUpdateDto data, MultipartFile file){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true);
         if(user==null){
-            throw new NotFoundMemberException();
+            throw new NotFoundEntityException("회원");
         }
         if(!user.getUiPwd().equals(data.getOriginPwd())){
             return ResponseDto.builder().time(LocalDateTime.now()).message("비밀번호 오류").status(false).code(HttpStatus.BAD_REQUEST).build();
@@ -78,7 +78,7 @@ public class UserService {
     public ResponseDto<?> dropUser(Long id){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true);
         if(user==null){
-            throw new NotFoundMemberException();
+            throw new NotFoundEntityException("회원");
         }
         user.dropUser();
         userRepo.save(user);
@@ -86,19 +86,7 @@ public class UserService {
         return ResponseDto.builder().status(true).message("탈퇴 성공").time(LocalDateTime.now()).code(HttpStatus.OK).build();
     }
 
-    @Transactional(readOnly = true)
-    public ResponseDto<List<ReviewDetailDto>> myReview(Long seq){
-        UserInfoEntity user = userRepo.findSeqReviewJoin(seq, true);
-        if(user==null){
-            throw new NotFoundMemberException();
-        }
-        if(user.getReview().size()==0){
-            return new ResponseDto<>("등록된 리뷰 없음", LocalDateTime.now(), false, null, HttpStatus.OK);
-        }
-        List<ReviewDetailDto> reviewDto = user.getReview().stream().map(ReviewDetailDto::new).toList();
 
-        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, reviewDto, HttpStatus.OK);
-    }
 
 
 

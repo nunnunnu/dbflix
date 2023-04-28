@@ -37,7 +37,7 @@ public class MovieInfoEntity {
     private Integer miPrice;
 
     @Column(name="mi_contry")
-    private String miContry;
+    private String miCountry;
 
     @Column(name="mi_genre")
     @Enumerated(value = EnumType.STRING)
@@ -62,7 +62,7 @@ public class MovieInfoEntity {
             this.miPrice = price;
         }
         if(hasText(country)){
-            this.miContry = country;
+            this.miCountry = country;
         }
         if(genre!=null){
             this.miGenre = genre;

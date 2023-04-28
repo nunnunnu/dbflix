@@ -48,9 +48,5 @@ public class UserApiController {
         ResponseDto<?> response = userService.dropUser(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
-    @GetMapping("/review/{seq}")
-    public ResponseEntity<ResponseDto<List<ReviewDetailDto>>> getMyReview(@PathVariable Long seq){
-        ResponseDto<List<ReviewDetailDto>> response = userService.myReview(seq);
-        return new ResponseEntity<>(response, response.getCode());
-    }
+
 }

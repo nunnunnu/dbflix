@@ -45,4 +45,9 @@ public class ReviewApiController {
         ResponseDto<?> response = reviewService.deleteReview(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
+    @GetMapping("/user/{seq}")
+    public ResponseEntity<ResponseDto<List<ReviewDetailDto>>> getMyReview(@PathVariable Long seq){
+        ResponseDto<List<ReviewDetailDto>> response = reviewService.myReview(seq);
+        return new ResponseEntity<>(response, response.getCode());
+    }
 }
