@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.dbflixproject.dbfilx.UserTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-04-28T06:19:16" hostname="rubricui-MacBookPro.local" time="0.103">
+  <properties/>
+  <testcase name="회원탈퇴_실패()" classname="com.dbflixproject.dbfilx.UserTest" time="0.103"/>
+  <system-out><![CDATA[15:19:13.939 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [UserTest]: using SpringBootContextLoader
+15:19:13.942 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.dbflixproject.dbfilx.UserTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+15:19:13.942 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.dbflixproject.dbfilx.UserTest]: UserTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+15:19:13.953 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using ContextCustomizers for test class [UserTest]: [DisableObservabilityContextCustomizer, PropertyMappingContextCustomizer, Customizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, MockitoContextCustomizer, TestRestTemplateContextCustomizer]
+15:19:13.986 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [/Users/rubric/Desktop/test/dbflix/build/classes/java/main/com/dbflixproject/dbfilx/DemoApplication.class]
+15:19:13.987 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.dbflixproject.dbfilx.DemoApplication for test class com.dbflixproject.dbfilx.UserTest
+15:19:14.026 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners for test class [UserTest]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, MockitoTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, TransactionalTestExecutionListener, SqlScriptsTestExecutionListener, EventPublishingTestExecutionListener, RestDocsTestExecutionListener, MockRestServiceServerResetTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockWebServiceServerTestExecutionListener, ResetMocksTestExecutionListener]
+15:19:14.026 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: class [UserTest], class annotated with @DirtiesContext [false] with mode [null]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.0.2)
+
+2023-04-28T15:19:14.144+09:00  INFO 21342 --- [    Test worker] com.dbflixproject.dbfilx.UserTest        : Starting UserTest using Java 17.0.7 with PID 21342 (started by rubric in /Users/rubric/Desktop/test/dbflix)
+2023-04-28T15:19:14.144+09:00  INFO 21342 --- [    Test worker] com.dbflixproject.dbfilx.UserTest        : No active profile set, falling back to 1 default profile: "default"
+2023-04-28T15:19:14.425+09:00  INFO 21342 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-28T15:19:14.460+09:00  INFO 21342 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 30 ms. Found 9 JPA repository interfaces.
+2023-04-28T15:19:14.638+09:00  INFO 21342 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-04-28T15:19:14.845+09:00  INFO 21342 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@32ea16b7
+2023-04-28T15:19:14.846+09:00  INFO 21342 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-04-28T15:19:14.869+09:00  INFO 21342 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-28T15:19:14.897+09:00  INFO 21342 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.6.Final
+2023-04-28T15:19:14.976+09:00  WARN 21342 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
+2023-04-28T15:19:15.061+09:00  INFO 21342 --- [    Test worker] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2023-04-28T15:19:15.467+09:00  INFO 21342 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-28T15:19:15.471+09:00  INFO 21342 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-28T15:19:16.143+09:00  INFO 21342 --- [    Test worker] com.dbflixproject.dbfilx.UserTest        : Started UserTest in 2.097 seconds (process running for 2.594)
+2023-04-28T15:19:16.237+09:00 DEBUG 21342 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        user_info
+        (ui_birth, ui_email, ui_file, ui_gen, ui_id, ui_name, ui_pwd, ui_status, ui_uri) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
