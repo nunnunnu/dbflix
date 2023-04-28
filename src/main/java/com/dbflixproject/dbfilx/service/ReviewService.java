@@ -1,27 +1,23 @@
 package com.dbflixproject.dbfilx.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import com.dbflixproject.dbfilx.dto.review.FavoriteGenreDto;
-import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.dbflixproject.dbfilx.dto.ResponseDto;
+import com.dbflixproject.dbfilx.dto.review.FavoriteGenreDto;
 import com.dbflixproject.dbfilx.dto.review.ReviewDetailDto;
 import com.dbflixproject.dbfilx.dto.review.ReviewInsertDto;
 import com.dbflixproject.dbfilx.entity.ReviewInfoEntity;
 import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
 import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
+import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
 import com.dbflixproject.dbfilx.repository.MovieInfoRepository;
 import com.dbflixproject.dbfilx.repository.ReviewInfoRepository;
 import com.dbflixproject.dbfilx.repository.UserInfoRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,10 +35,10 @@ public class ReviewService {
         MovieInfoEntity movie = movieRepo.findById(data.getMovieSeq()).orElseThrow(()->new NotFoundEntityException("영화"));
 
         if(reviewRepo.existsByUserAndMovie(user, movie)){
-            return ResponseDto.builder().time(LocalDateTime.now()).message("이미 등록된 리뷰가 존재합니다.").code(HttpStatus.BAD_REQUEST).status(false).build();
+            return new ResponseDto.FailBuilder<>("이미 등록된 리뷰 존재").build();
         }
 
-        ReviewInfoEntity review = new ReviewInfoEntity(data, user, movie);
+        ReviewInfoEntity review = new ReviewInfoEntity(data.getComment(), data.getRating(), user, movie);
         reviewRepo.save(review);
 
         return new ResponseDto.SuccessBuilder<>("삭제 성공", null).build();
@@ -79,6 +75,6 @@ public class ReviewService {
 //        }
         List<ReviewDetailDto> reviewDto = review.stream().map(ReviewDetailDto::new).toList();
 
-        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, reviewDto, HttpStatus.OK);
+        return new ResponseDto.SuccessBuilder<>("조회 성공", reviewDto).build();
     }
 }

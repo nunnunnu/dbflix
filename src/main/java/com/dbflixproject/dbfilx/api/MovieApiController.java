@@ -5,6 +5,7 @@ import com.dbflixproject.dbfilx.dto.movie.MovieAddCreatorDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieInsertDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieRankingDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieUpdateDto;
+import com.dbflixproject.dbfilx.entity.enumfile.MovieRole;
 import com.dbflixproject.dbfilx.service.MovieService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +65,9 @@ public class MovieApiController {
         ResponseDto<?> response = movieService.deleteMovieCreator(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
-
-
+    @PatchMapping("/creator/{seq}/{type}")
+    public ResponseEntity<ResponseDto<?>> updateMovieRole(@PathVariable Long seq, @PathVariable MovieRole type){
+        ResponseDto<?> response = movieService.updateMovieRole(seq, type);
+        return new ResponseEntity<>(response, response.getCode());
+    }
 }

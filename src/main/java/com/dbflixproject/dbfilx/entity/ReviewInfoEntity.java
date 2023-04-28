@@ -41,10 +41,10 @@ public class ReviewInfoEntity {
     @JoinColumn(name="ri_mi_seq")
     private MovieInfoEntity movie;
 
-    public ReviewInfoEntity(ReviewInsertDto data, UserInfoEntity user, MovieInfoEntity movie) {
+    public ReviewInfoEntity(String comment, Integer rate, UserInfoEntity user, MovieInfoEntity movie) {
         this.riCreated = LocalDateTime.now();
-        this.riComment = data.getComment();
-        this.riRate = data.getRating();
+        this.riComment = comment;
+        this.riRate = rate;
         this.user = user;
         this.movie = movie;
     }

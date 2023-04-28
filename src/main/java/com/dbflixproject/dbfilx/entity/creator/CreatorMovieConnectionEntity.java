@@ -33,6 +33,9 @@ public class CreatorMovieConnectionEntity {
     @Enumerated(value = EnumType.STRING)
     private MovieRole cmcRole;
 
+    public void updateRole(MovieRole role) {
+        this.cmcRole = role;
+    }
 }
 
 

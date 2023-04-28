@@ -26,9 +26,8 @@ public class AwardApiController {
         return new ResponseEntity<>(response, response.getCode());
     }
     @DeleteMapping("/{seq}")
-    public ResponseEntity<?> deleteAward(@PathVariable Long seq){
+    public ResponseEntity<ResponseDto<?>> deleteAward(@PathVariable Long seq){
         ResponseDto<?> response = awardService.deleteAward(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
-
 }

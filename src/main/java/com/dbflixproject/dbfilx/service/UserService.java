@@ -1,22 +1,16 @@
 package com.dbflixproject.dbfilx.service;
 
 import com.dbflixproject.dbfilx.dto.ResponseDto;
-import com.dbflixproject.dbfilx.dto.review.ReviewDetailDto;
 import com.dbflixproject.dbfilx.dto.user.UserDetailDto;
 import com.dbflixproject.dbfilx.dto.user.UserJoinDto;
 import com.dbflixproject.dbfilx.dto.user.UserUpdateDto;
-import com.dbflixproject.dbfilx.entity.ReviewInfoEntity;
 import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
 import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
 import com.dbflixproject.dbfilx.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +21,7 @@ public class UserService {
     @Transactional
     public ResponseDto<?> userJoin(UserJoinDto data, MultipartFile file){
         if(userRepo.existsByUiId(data.getId())){
-            return ResponseDto.builder()
-                    .time(LocalDateTime.now())
-                    .status(false)
-                    .message("이미 등록된 아이디입니다.")
-                    .code(HttpStatus.BAD_REQUEST)
-                    .build();
+            return new ResponseDto.FailBuilder<>("이미 등록된 아이디입니다.").build();
         }
         UserInfoEntity user = new UserInfoEntity();
         if(file!=null){
@@ -43,7 +32,7 @@ public class UserService {
 
         userRepo.save(user);
 
-        return ResponseDto.builder().message("회원가입 성공").status(true).time(LocalDateTime.now()).code(HttpStatus.OK).build();
+        return new ResponseDto.SuccessBuilder<>("회원가입 성공", null).build();
     }
 
     @Transactional(readOnly = true)
@@ -53,7 +42,7 @@ public class UserService {
             throw new NotFoundEntityException("회원");
         }
         UserDetailDto userDto = new UserDetailDto(user);
-        return new ResponseDto<>("조회성공", LocalDateTime.now(), true, userDto, HttpStatus.OK);
+        return new ResponseDto.SuccessBuilder<>("조회 성공", userDto).build();
     }
 
     @Transactional
@@ -63,7 +52,7 @@ public class UserService {
             throw new NotFoundEntityException("회원");
         }
         if(!user.getUiPwd().equals(data.getOriginPwd())){
-            return ResponseDto.builder().time(LocalDateTime.now()).message("비밀번호 오류").status(false).code(HttpStatus.BAD_REQUEST).build();
+            return new ResponseDto.FailBuilder<>("비밀번호 오류").build();
         }
         if(file!=null){
             String fileName = fileService.saveImageFile(file);
@@ -71,7 +60,7 @@ public class UserService {
         }
         user.changeUserInfo(data.getChangePwd(), data.getEmail(), data.getName(), data.getGen());
 
-        return ResponseDto.builder().status(true).message("변경 성공").time(LocalDateTime.now()).code(HttpStatus.OK).build();
+        return new ResponseDto.SuccessBuilder<>("변경 성공", null).build();
     }
 
     @Transactional
@@ -83,7 +72,7 @@ public class UserService {
         user.dropUser();
         userRepo.save(user);
 
-        return ResponseDto.builder().status(true).message("탈퇴 성공").time(LocalDateTime.now()).code(HttpStatus.OK).build();
+        return new ResponseDto.SuccessBuilder<>("탈퇴 성공", null).build();
     }
 
 

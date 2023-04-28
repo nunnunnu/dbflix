@@ -20,6 +20,7 @@ public class ResponseDto<T> {
     private T data;
     @JsonIgnore
     private HttpStatus code;
+    
     private ResponseDto(SuccessBuilder<T> builder){
         this.time = builder.time;
         this.code = builder.code;

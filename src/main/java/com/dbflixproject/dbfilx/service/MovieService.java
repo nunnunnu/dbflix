@@ -7,6 +7,7 @@ import com.dbflixproject.dbfilx.entity.CompanyInfoEntity;
 import com.dbflixproject.dbfilx.entity.creator.CreatorInfoEntity;
 import com.dbflixproject.dbfilx.entity.creator.CreatorMovieConnectionEntity;
 import com.dbflixproject.dbfilx.entity.enumfile.AwardCategory;
+import com.dbflixproject.dbfilx.entity.enumfile.MovieRole;
 import com.dbflixproject.dbfilx.entity.movie.MovieAwardConnectionEntity;
 import com.dbflixproject.dbfilx.entity.movie.MovieInfoEntity;
 import com.dbflixproject.dbfilx.exception.*;
@@ -59,7 +60,7 @@ public class MovieService {
         CreatorInfoEntity creator = creatorRepo.findById(data.getCreatorSeq()).orElseThrow(()->new NotFoundEntityException("제작사"));
         CreatorMovieConnectionEntity connect = new CreatorMovieConnectionEntity(null, creator, movie, data.getRole());
         if(cMovieRepo.existsByMovieAndCreator(movie, creator)){
-            return ResponseDto.builder().status(false).code(HttpStatus.BAD_REQUEST).message("이미 등록된 영화인입니다.").time(LocalDateTime.now()).build();
+            return new ResponseDto.FailBuilder<>("이미 등록된 영화인입니다.").build();
         }
         cMovieRepo.save(connect);
         return new ResponseDto.SuccessBuilder<>("영화인 추가 성공", null).build();
@@ -72,7 +73,7 @@ public class MovieService {
             throw new NotFoundEntityException("상");
         }
         if(mAwardRepo.existsByMovieAndAward(movie, award)){
-            return ResponseDto.builder().time(LocalDateTime.now()).message("이미 등록된 상입니다.").code(HttpStatus.OK).status(true).build();
+            return new ResponseDto.FailBuilder<>("이미 등록된 상입니다.").build();
         }
         MovieAwardConnectionEntity entity = new MovieAwardConnectionEntity(null, movie, award);
         mAwardRepo.save(entity);
@@ -114,5 +115,12 @@ public class MovieService {
         cMovieRepo.delete(creatorConnection);
 
         return new ResponseDto.SuccessBuilder<>("삭제 성공", null).build();
+    }
+
+    public ResponseDto<?> updateMovieRole(Long seq, MovieRole role){
+        CreatorMovieConnectionEntity creatorConnection = cMovieRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("영화-영화인"));
+        creatorConnection.updateRole(role);
+        cMovieRepo.save(creatorConnection);
+        return new ResponseDto.SuccessBuilder<>("수정성공", null).build();
     }
 }

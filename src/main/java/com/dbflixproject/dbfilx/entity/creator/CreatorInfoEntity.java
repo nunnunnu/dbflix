@@ -46,12 +46,12 @@ public class CreatorInfoEntity {
     @Column(name="ci_name")
     private String ciName;
 
-    public CreatorInfoEntity(CreatorInsertDto data){
-        this.ciName = data.getName();
-        this.ciGen = data.getGen();
-        this.ciRole = data.getType();
-        this.ciAge = data.getAge();
-        this.ciCountry = data.getCountry();
+    public CreatorInfoEntity(String name, Gender gen, CreatorType type, Integer age, String country){
+        this.ciName = name;
+        this.ciGen = gen;
+        this.ciRole = type;
+        this.ciAge = age;
+        this.ciCountry = country;
     }
 
     public void updateCreatorData(String name, String country, Integer age, Gender gen){

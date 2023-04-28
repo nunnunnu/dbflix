@@ -34,7 +34,7 @@ public class CreatorService {
 
     @Transactional
     public ResponseDto<?> saveCreator(CreatorInsertDto data){
-        CreatorInfoEntity creator = new CreatorInfoEntity(data);
+        CreatorInfoEntity creator = new CreatorInfoEntity(data.getName(), data.getGen(), data.getType(), data.getAge(), data.getCountry());
         creatorRepo.save(creator);
         return new ResponseDto.SuccessBuilder<>("등록 성공", null).build();
     }
@@ -53,16 +53,10 @@ public class CreatorService {
         CreatorInfoEntity creator = creatorRepo.findById(creatorSeq).orElseThrow(()->new NotFoundEntityException("영화인"));
         AwardInfoEntity award = awardRepo.findById(awardSeq).orElseThrow(()->new NotFoundEntityException("상"));
         if(!award.getAiCate().toString().equals(creator.getCiRole().toString())){
-            return ResponseDto.builder()
-                    .code(HttpStatus.BAD_REQUEST).status(false).time(LocalDateTime.now())
-                    .message(award.getAiCate()+"타입의 상을 "+creator.getCiRole()+"타입의 영화인에게 등록할 수 없습니다.")
-                    .build();
+            return new ResponseDto.FailBuilder<>(award.getAiCate()+"타입의 상을 "+creator.getCiRole()+"타입의 영화인에게 등록할 수 없습니다.").build();
         }
         if(cAwardRepo.existsByCreatorAndAward(creator, award)){
-            return ResponseDto.builder()
-                    .code(HttpStatus.BAD_REQUEST).status(false).time(LocalDateTime.now())
-                    .message("이미 등록된 상입니다.")
-                    .build();
+            return new ResponseDto.FailBuilder<>("이미 등록된 상입니다.").build();
         }
         CreatorAwardConnectionEntity connect = new CreatorAwardConnectionEntity(null, creator, award);
         cAwardRepo.save(connect);
