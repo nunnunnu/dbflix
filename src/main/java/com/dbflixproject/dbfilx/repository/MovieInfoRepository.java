@@ -9,10 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MovieInfoRepository extends JpaRepository<MovieInfoEntity, Long> {
     @Query("select m from MovieInfoEntity m join fetch m.company where m.miSeq = :seq")
-    MovieInfoEntity findSeqCompanyjoin(@Param("seq") Long seq);
+    Optional<MovieInfoEntity> findSeqCompanyjoin(@Param("seq") Long seq);
 
     List<MovieInfoEntity> findByCompany(CompanyInfoEntity company);
 

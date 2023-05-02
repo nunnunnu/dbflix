@@ -37,20 +37,16 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public ResponseDto<UserDetailDto> getUserDetail(Long id){
-        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true);
-        if(user==null){
-            throw new NotFoundEntityException("회원");
-        }
+        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true).orElseThrow(()->new NotFoundEntityException("회원"));
+
         UserDetailDto userDto = new UserDetailDto(user);
         return new ResponseDto.SuccessBuilder<>("조회 성공", userDto).build();
     }
 
     @Transactional
     public ResponseDto<?> updateUserInfo(Long id, UserUpdateDto data, MultipartFile file){
-        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true);
-        if(user==null){
-            throw new NotFoundEntityException("회원");
-        }
+        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true).orElseThrow(()->new NotFoundEntityException("회원"));
+
         if(!user.getUiPwd().equals(data.getOriginPwd())){
             return new ResponseDto.FailBuilder<>("비밀번호 오류").build();
         }
@@ -65,10 +61,7 @@ public class UserService {
 
     @Transactional
     public ResponseDto<?> dropUser(Long id){
-        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true);
-        if(user==null){
-            throw new NotFoundEntityException("회원");
-        }
+        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true).orElseThrow(()->new NotFoundEntityException("회원"));
         user.dropUser();
         userRepo.save(user);
 

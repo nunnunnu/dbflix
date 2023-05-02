@@ -28,10 +28,8 @@ public class ReviewService {
 
     @Transactional
     public ResponseDto<?> insertReview(ReviewInsertDto data){
-        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(data.getUserSeq(), true);
-        if(user==null){
-            throw new NotFoundEntityException("회원");
-        }
+        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(data.getUserSeq(), true).orElseThrow(()->new NotFoundEntityException("회원"));
+
         MovieInfoEntity movie = movieRepo.findById(data.getMovieSeq()).orElseThrow(()->new NotFoundEntityException("영화"));
 
         if(reviewRepo.existsByUserAndMovie(user, movie)){
@@ -65,10 +63,8 @@ public class ReviewService {
     }
     @Transactional(readOnly = true)
     public ResponseDto<List<ReviewDetailDto>> myReview(Long seq){
-        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(seq, true);
-        if(user==null){
-            throw new NotFoundEntityException("회원");
-        }
+        UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(seq, true).orElseThrow(()->new NotFoundEntityException("회원"));
+
         List<ReviewInfoEntity> review = reviewRepo.findByUser(user);
 //        if(review.size()==0){
 //            return new ResponseDto<>("등록된 리뷰 없음", LocalDateTime.now(), false, null, HttpStatus.OK);

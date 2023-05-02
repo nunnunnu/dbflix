@@ -5,9 +5,10 @@ import com.dbflixproject.dbfilx.entity.enumfile.AwardCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AwardInfoRepository extends JpaRepository<AwardInfoEntity, Long> {
-    AwardInfoEntity findByAiSeqAndAiCate(Long seq, AwardCategory cate);
+    Optional<AwardInfoEntity> findByAiSeqAndAiCate(Long seq, AwardCategory cate);
 
     List<AwardInfoEntity> findByAiCate(AwardCategory awardCategory);
 }

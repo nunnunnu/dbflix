@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Calendar;
 
+import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
 import com.dbflixproject.dbfilx.exception.NotFoundFileException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -54,10 +55,8 @@ public class FileService {
     public ResponseEntity<Resource> getImage ( @PathVariable String fileName,
                                                HttpServletRequest request ) throws Exception
     {
-        UserInfoEntity user = userRepo.findByUiFile(fileName);
-        if(user==null){
-            throw new NotFoundFileException();
-        }
+        UserInfoEntity user = userRepo.findByUiFile(fileName).orElseThrow(()->new NotFoundFileException());
+
         Path folderLocation = null;
 
         folderLocation = Paths.get(profile_img_path);

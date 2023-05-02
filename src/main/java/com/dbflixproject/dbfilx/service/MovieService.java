@@ -43,14 +43,13 @@ public class MovieService {
     }
     @Transactional(readOnly = true)
     public ResponseDto<MovieDetailDto> movieDetailShow(Long seq){
-        MovieInfoEntity movie = movieRepo.findSeqCompanyjoin(seq);
-        if(movie ==null){
-            throw new NotFoundEntityException("영화");
-        }
+        MovieInfoEntity movie = movieRepo.findSeqCompanyjoin(seq).orElseThrow(()->new NotFoundEntityException("영화"));
+
         List<CreatorMovieConnectionEntity> creators = cMovieRepo.findByMovie(movie);
         List<MovieAwardConnectionEntity> awards = mAwardRepo.findByMovie(movie);
         Double rate = reviewRepo.movieRateAge(movie);
         MovieDetailDto result = new MovieDetailDto(movie, creators, awards, rate);
+
         return new ResponseDto.SuccessBuilder<>("조회 성공", result).build();
     }
 
@@ -68,10 +67,8 @@ public class MovieService {
     @Transactional
     public ResponseDto<?> addAward(Long movieSeq, Long awardSeq){
         MovieInfoEntity movie = movieRepo.findById(movieSeq).orElseThrow(()->new NotFoundEntityException("영화"));
-        AwardInfoEntity award = awardRepo.findByAiSeqAndAiCate(awardSeq, AwardCategory.영화);
-        if(award==null){
-            throw new NotFoundEntityException("상");
-        }
+        AwardInfoEntity award = awardRepo.findByAiSeqAndAiCate(awardSeq, AwardCategory.영화).orElseThrow(()-> new NotFoundEntityException("상"));
+
         if(mAwardRepo.existsByMovieAndAward(movie, award)){
             return new ResponseDto.FailBuilder<>("이미 등록된 상입니다.").build();
         }
