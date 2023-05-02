@@ -38,7 +38,7 @@ public class CreatorService {
     public NewResponseDto saveCreator(CreatorInsertDto data){
         CreatorInfoEntity creator = new CreatorInfoEntity(data.getName(), data.getGen(), data.getType(), data.getAge(), data.getCountry());
         creatorRepo.save(creator);
-        return new NewResponseDto("등록 성공",HttpStatus.OK);
+        return NewResponseDto.success("등록");
     }
     @Transactional(readOnly = true)
     public NewResponseDataDto<CreatorDetailDto> getCreatorDetail(Long id){
@@ -48,22 +48,22 @@ public class CreatorService {
 
         CreatorDetailDto result = new CreatorDetailDto(creator, awardConnection, movieConnection);
 
-        return new NewResponseDataDto<>("조회 성공", HttpStatus.OK, result);
+        return NewResponseDataDto.success("등록 성공", result);
     }
     @Transactional
     public NewResponseDto addCreatorAward(Long creatorSeq, Long awardSeq){
         CreatorInfoEntity creator = creatorRepo.findById(creatorSeq).orElseThrow(()->new NotFoundEntityException("영화인"));
         AwardInfoEntity award = awardRepo.findById(awardSeq).orElseThrow(()->new NotFoundEntityException("상"));
         if(!award.getAiCate().toString().equals(creator.getCiRole().toString())){
-            return new NewResponseDto(award.getAiCate()+"타입의 상을 "+creator.getCiRole()+"타입의 영화인에게 등록할 수 없습니다.", HttpStatus.BAD_REQUEST);
+            return NewResponseDto.fail(award.getAiCate()+"타입의 상을 "+creator.getCiRole()+"타입의 영화인에게 등록할 수 없습니다.");
         }
         if(cAwardRepo.existsByCreatorAndAward(creator, award)){
-            return new NewResponseDto("이미 등록된 상입니다.", HttpStatus.BAD_REQUEST);
+            return NewResponseDto.fail("이미 등록된 상입니다.");
         }
         CreatorAwardConnectionEntity connect = new CreatorAwardConnectionEntity(null, creator, award);
         cAwardRepo.save(connect);
 
-        return new NewResponseDto("등록 성공", HttpStatus.OK);
+        return NewResponseDto.success("등록성공");
     }
     @Transactional
     public NewResponseDto updateCreatorInfo(Long seq, CreatorUpdateDto data){
@@ -71,20 +71,20 @@ public class CreatorService {
         creator.updateCreatorData(data.getName(), data.getCountry(), data.getAge(), data.getGen());
         creatorRepo.save(creator);
 
-        return new NewResponseDto("수정 성공", HttpStatus.OK);
+        return NewResponseDto.success("수정성공");
     }
     @Transactional
     public NewResponseDto deleteCreator(Long seq) {
         CreatorInfoEntity creator = creatorRepo.findById(seq).orElseThrow(()->new NotFoundEntityException("영화인"));
         creatorRepo.delete(creator);
 
-        return new NewResponseDto("삭제 성공", HttpStatus.OK);
+        return NewResponseDto.success("삭제성공");
     }
     @Transactional
     public NewResponseDto deleteCreatorAward(Long seq) {
         CreatorAwardConnectionEntity awardConnection = cAwardRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("영화인 상"));
         cAwardRepo.delete(awardConnection);
 
-        return new NewResponseDto("삭제 성공", HttpStatus.OK);
+        return NewResponseDto.success("삭제성공");
     }
 }

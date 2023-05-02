@@ -24,4 +24,11 @@ public class NewResponseDto {
         this.message = message;
         this.code = code;
     }
+
+    public static NewResponseDto success(String message){
+        return new NewResponseDto(message+" 성공", HttpStatus.OK);
+    }
+    public static NewResponseDto fail(String message){
+        return new NewResponseDto(message, HttpStatus.BAD_REQUEST);
+    }
 }

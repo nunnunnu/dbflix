@@ -25,19 +25,19 @@ public class AwardService {
         AwardInfoEntity award = new AwardInfoEntity(data.getName(), data.getYear(), data.getCategory());
         awardRepo.save(award);
 
-        return NewResponseDto.builder().code(HttpStatus.OK).time(LocalDateTime.now()).message("조회 성공").build();
+        return NewResponseDto.success("등록");
     }
 
     @Transactional
     public NewResponseDto updateAward(Long seq, AwardUpdateDto data) {
         AwardInfoEntity award = awardRepo.findById(seq).orElseThrow(() -> new NotFoundEntityException("상"));
         award.updateData(data.getName(), data.getYear(), data.getCategory());
-        return NewResponseDto.builder().code(HttpStatus.OK).time(LocalDateTime.now()).message("수정 성공").build();
+        return NewResponseDto.success("수정");
     }
     @Transactional
     public NewResponseDto deleteAward(Long seq){
         AwardInfoEntity award = awardRepo.findById(seq).orElseThrow(() -> new NotFoundEntityException("상"));
         awardRepo.delete(award);
-        return NewResponseDto.builder().code(HttpStatus.OK).time(LocalDateTime.now()).message("조회 성공").build();
+        return NewResponseDto.success("삭제");
     }
 }

@@ -41,7 +41,7 @@ public class MovieService {
         MovieInfoEntity movie =
                 new MovieInfoEntity(null, data.getAttendance(), data.getRegDt(), data.getName(), data.getPrice(), data.getCountry(), data.getGenre(), company);
         movieRepo.save(movie);
-        return new NewResponseDto("등록 성공", HttpStatus.OK);
+        return NewResponseDto.success("등록성공");
     }
     @Transactional(readOnly = true)
     public NewResponseDataDto<MovieDetailDto> movieDetailShow(Long seq){
@@ -52,7 +52,7 @@ public class MovieService {
         Double rate = reviewRepo.movieRateAge(movie);
         MovieDetailDto result = new MovieDetailDto(movie, creators, awards, rate);
 
-        return new NewResponseDataDto<>("조회 성공", HttpStatus.OK, result);
+        return NewResponseDataDto.success("조회 성공", result);
     }
 
     @Transactional
@@ -61,10 +61,10 @@ public class MovieService {
         CreatorInfoEntity creator = creatorRepo.findById(data.getCreatorSeq()).orElseThrow(()->new NotFoundEntityException("제작사"));
         CreatorMovieConnectionEntity connect = new CreatorMovieConnectionEntity(null, creator, movie, data.getRole());
         if(cMovieRepo.existsByMovieAndCreator(movie, creator)){
-            return new NewResponseDto("이미 등록된 영화", HttpStatus.BAD_REQUEST);
+            return NewResponseDto.fail("이미 등록된 영화");
         }
         cMovieRepo.save(connect);
-        return new NewResponseDto("영화인 추가 성공", HttpStatus.OK);
+        return NewResponseDto.success("영화인 추가 성공");
     }
     @Transactional
     public NewResponseDto addAward(Long movieSeq, Long awardSeq){
@@ -72,11 +72,11 @@ public class MovieService {
         AwardInfoEntity award = awardRepo.findByAiSeqAndAiCate(awardSeq, AwardCategory.영화).orElseThrow(()-> new NotFoundEntityException("상"));
 
         if(mAwardRepo.existsByMovieAndAward(movie, award)){
-            return new NewResponseDto("이미 추가된 상입니다.", HttpStatus.BAD_REQUEST);
+            return NewResponseDto.fail("이미 추가된 상");
         }
         MovieAwardConnectionEntity entity = new MovieAwardConnectionEntity(null, movie, award);
         mAwardRepo.save(entity);
-        return new NewResponseDto("등록 성공", HttpStatus.OK);
+        return NewResponseDto.success("등록 성공");
     }
     @Transactional
     public NewResponseDto updateMovie(Long seq, MovieUpdateDto data){
@@ -84,42 +84,42 @@ public class MovieService {
         movie.changeData(data.getName(), data.getAttendance(), data.getRegDt(), data.getPrice(), data.getCounty(), data.getGenre());
         movieRepo.save(movie);
 
-        return new NewResponseDto("수정 성공", HttpStatus.OK);
+        return NewResponseDto.success("수정성공");
     }
     @Transactional(readOnly = true)
     public NewResponseDataDto<List<MovieRankingDto>> MovieRanking(String type){
         if(!type.equals("attendance") && !type.equals("rate")){
-            return new NewResponseDataDto<>("타입 오류(attendance/rate)", HttpStatus.BAD_REQUEST, null);
+            return NewResponseDataDto.fail("타입 오류(attendance/rate)", null);
         }
         List<MovieRankingDto> movies = movieRepo.rateRanking(Sort.by(type).descending());
 
-        return new NewResponseDataDto<>("조회 성공", HttpStatus.OK, movies);
+        return NewResponseDataDto.success("조회 성공", movies);
     }
 
     public NewResponseDto movieDelete(Long seq) {
         MovieInfoEntity movie = movieRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("영화"));
         movieRepo.delete(movie);
 
-        return new NewResponseDto("삭제 성공", HttpStatus.OK);
+        return NewResponseDto.success("삭제 성공");
     }
 
     public NewResponseDto deleteMovieAward(Long seq) {
         MovieAwardConnectionEntity awardConnection = mAwardRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("영화 상"));
         mAwardRepo.delete(awardConnection);
-        return new NewResponseDto("삭제 성공", HttpStatus.OK);
+        return NewResponseDto.success("삭제 성공");
     }
 
     public NewResponseDto deleteMovieCreator(Long seq) {
         CreatorMovieConnectionEntity creatorConnection = cMovieRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("영화-영화인"));
         cMovieRepo.delete(creatorConnection);
 
-        return new NewResponseDto("삭제 성공", HttpStatus.OK);
+        return NewResponseDto.success("삭제 성공");
     }
 
     public NewResponseDto updateMovieRole(Long seq, MovieRole role){
         CreatorMovieConnectionEntity creatorConnection = cMovieRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("영화-영화인"));
         creatorConnection.updateRole(role);
         cMovieRepo.save(creatorConnection);
-        return new NewResponseDto("수정 성공", HttpStatus.OK);
+        return NewResponseDto.success("수정 성공");
     }
 }
