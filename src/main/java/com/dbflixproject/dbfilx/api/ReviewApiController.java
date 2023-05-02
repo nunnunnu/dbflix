@@ -1,5 +1,7 @@
 package com.dbflixproject.dbfilx.api;
 
+import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
+import com.dbflixproject.dbfilx.dto.NewResponseDto;
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.review.FavoriteGenreDto;
 import com.dbflixproject.dbfilx.dto.review.ReviewDetailDto;
@@ -22,17 +24,17 @@ import java.util.List;
 public class ReviewApiController {
     private final ReviewService reviewService;
     @PostMapping()
-    public ResponseEntity<ResponseDto<?>> insertReview(@RequestBody @Valid ReviewInsertDto data){
-        ResponseDto<?> response = reviewService.insertReview(data);
+    public ResponseEntity<NewResponseDto> insertReview(@RequestBody @Valid ReviewInsertDto data){
+        NewResponseDto response = reviewService.insertReview(data);
         return new ResponseEntity<>(response, response.getCode());
     }
 
     @GetMapping("/{seq}")
-    public ResponseEntity<ResponseDto<Page<ReviewDetailDto>>> getMovieReview(
+    public ResponseEntity<NewResponseDataDto<Page<ReviewDetailDto>>> getMovieReview(
             @PathVariable Long seq,
             @PageableDefault(size=10, sort="riCreated", direction = Sort.Direction.DESC) Pageable page
     ){
-        ResponseDto<Page<ReviewDetailDto>> response = reviewService.getReview(seq, page);
+        NewResponseDataDto<Page<ReviewDetailDto>> response = reviewService.getReview(seq, page);
         return new ResponseEntity<>(response, response.getCode());
     }
     @GetMapping("/genre/{seq}")
@@ -41,13 +43,13 @@ public class ReviewApiController {
         return new ResponseEntity<>(response, response.getCode());
     }
     @DeleteMapping("/{seq}")
-    public ResponseEntity<ResponseDto<?>> deleteReview(@PathVariable Long seq){
-        ResponseDto<?> response = reviewService.deleteReview(seq);
+    public ResponseEntity<NewResponseDto> deleteReview(@PathVariable Long seq){
+        NewResponseDto response = reviewService.deleteReview(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
     @GetMapping("/user/{seq}")
-    public ResponseEntity<ResponseDto<List<ReviewDetailDto>>> getMyReview(@PathVariable Long seq){
-        ResponseDto<List<ReviewDetailDto>> response = reviewService.myReview(seq);
+    public ResponseEntity<NewResponseDataDto<List<ReviewDetailDto>>> getMyReview(@PathVariable Long seq){
+        NewResponseDataDto<List<ReviewDetailDto>> response = reviewService.myReview(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
 }

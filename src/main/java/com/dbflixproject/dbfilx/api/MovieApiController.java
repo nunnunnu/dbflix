@@ -1,5 +1,7 @@
 package com.dbflixproject.dbfilx.api;
 
+import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
+import com.dbflixproject.dbfilx.dto.NewResponseDto;
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieAddCreatorDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieInsertDto;
@@ -21,53 +23,53 @@ public class MovieApiController {
     private final MovieService movieService;
 
     @PostMapping()
-    public ResponseEntity<ResponseDto<?>> insertMovie(@Valid @RequestBody MovieInsertDto data){
-        ResponseDto<?> response = movieService.insertMovie(data);
+    public ResponseEntity<NewResponseDto> insertMovie(@Valid @RequestBody MovieInsertDto data){
+        NewResponseDto response = movieService.insertMovie(data);
         return new ResponseEntity<>(response, response.getCode());
     }
     @GetMapping("/{seq}")
-    public ResponseEntity<ResponseDto<?>> movieDetailInfo(@PathVariable Long seq){
-        ResponseDto<?> response = movieService.movieDetailShow(seq);
+    public ResponseEntity<NewResponseDto> movieDetailInfo(@PathVariable Long seq){
+        NewResponseDto response = movieService.movieDetailShow(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
     @PostMapping("/creator")
-    public ResponseEntity<ResponseDto<?>> movieAddCreator(@Valid @RequestBody MovieAddCreatorDto data){
-        ResponseDto<?> response = movieService.addCreator(data);
+    public ResponseEntity<NewResponseDto> movieAddCreator(@Valid @RequestBody MovieAddCreatorDto data){
+        NewResponseDto response = movieService.addCreator(data);
         return new ResponseEntity<>(response, response.getCode());
     }
     @PostMapping("/award/{movieSeq}/{awardSeq}")
-    public ResponseEntity<ResponseDto<?>> movieAddAward(@PathVariable Long movieSeq, @PathVariable Long awardSeq){
-        ResponseDto<?> response = movieService.addAward(movieSeq, awardSeq);
+    public ResponseEntity<NewResponseDto> movieAddAward(@PathVariable Long movieSeq, @PathVariable Long awardSeq){
+        NewResponseDto response = movieService.addAward(movieSeq, awardSeq);
         return new ResponseEntity<>(response, response.getCode());
     }
     @PutMapping("/{seq}")
-    public ResponseEntity<ResponseDto<?>> movieUpdateInfo(@PathVariable Long seq, @RequestBody MovieUpdateDto data){
-        ResponseDto<?> response = movieService.updateMovie(seq, data);
+    public ResponseEntity<NewResponseDto> movieUpdateInfo(@PathVariable Long seq, @RequestBody MovieUpdateDto data){
+        NewResponseDto response = movieService.updateMovie(seq, data);
         return new ResponseEntity<>(response, response.getCode());
     }
     @GetMapping("/ranking/{type}")
-    public ResponseEntity<ResponseDto<List<MovieRankingDto>>> movieRanking(@PathVariable String type){
-        ResponseDto<List<MovieRankingDto>> response = movieService.MovieRanking(type);
+    public ResponseEntity<NewResponseDataDto<List<MovieRankingDto>>> movieRanking(@PathVariable String type){
+        NewResponseDataDto<List<MovieRankingDto>> response = movieService.MovieRanking(type);
         return new ResponseEntity<>(response, response.getCode());
     }
     @DeleteMapping("/{seq}")
-    public ResponseEntity<ResponseDto<?>> movieDelete(@PathVariable Long seq){
-        ResponseDto<?> response = movieService.movieDelete(seq);
+    public ResponseEntity<NewResponseDto> movieDelete(@PathVariable Long seq){
+        NewResponseDto response = movieService.movieDelete(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
     @DeleteMapping("/award/{seq}")
-    public ResponseEntity<ResponseDto<?>> deleteMovieAward(@PathVariable Long seq){
-        ResponseDto<?> response = movieService.deleteMovieAward(seq);
+    public ResponseEntity<NewResponseDto> deleteMovieAward(@PathVariable Long seq){
+        NewResponseDto response = movieService.deleteMovieAward(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
     @DeleteMapping("/creator/{seq}")
-    public ResponseEntity<ResponseDto<?>> deleteMovieCreator(@PathVariable Long seq){
-        ResponseDto<?> response = movieService.deleteMovieCreator(seq);
+    public ResponseEntity<NewResponseDto> deleteMovieCreator(@PathVariable Long seq){
+        NewResponseDto response = movieService.deleteMovieCreator(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
     @PatchMapping("/creator/{seq}/{type}")
-    public ResponseEntity<ResponseDto<?>> updateMovieRole(@PathVariable Long seq, @PathVariable MovieRole type){
-        ResponseDto<?> response = movieService.updateMovieRole(seq, type);
+    public ResponseEntity<NewResponseDto> updateMovieRole(@PathVariable Long seq, @PathVariable MovieRole type){
+        NewResponseDto response = movieService.updateMovieRole(seq, type);
         return new ResponseEntity<>(response, response.getCode());
     }
 }

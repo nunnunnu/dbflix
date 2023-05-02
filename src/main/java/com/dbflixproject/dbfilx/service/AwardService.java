@@ -1,5 +1,6 @@
 package com.dbflixproject.dbfilx.service;
 
+import com.dbflixproject.dbfilx.dto.NewResponseDto;
 import com.dbflixproject.dbfilx.dto.award.AwardInsertDto;
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.award.AwardUpdateDto;
@@ -7,8 +8,11 @@ import com.dbflixproject.dbfilx.entity.AwardInfoEntity;
 import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
 import com.dbflixproject.dbfilx.repository.AwardInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 
 @Service
@@ -17,23 +21,23 @@ public class AwardService {
     private final AwardInfoRepository awardRepo;
 
     @Transactional
-    public ResponseDto<?> insertAward(AwardInsertDto data){
+    public NewResponseDto insertAward(AwardInsertDto data){
         AwardInfoEntity award = new AwardInfoEntity(data.getName(), data.getYear(), data.getCategory());
         awardRepo.save(award);
 
-        return new ResponseDto.SuccessBuilder<>("등록 성공", null).build();
+        return NewResponseDto.builder().code(HttpStatus.OK).time(LocalDateTime.now()).message("조회 성공").build();
     }
 
     @Transactional
-    public ResponseDto<?> updateAward(Long seq, AwardUpdateDto data) {
+    public NewResponseDto updateAward(Long seq, AwardUpdateDto data) {
         AwardInfoEntity award = awardRepo.findById(seq).orElseThrow(() -> new NotFoundEntityException("상"));
         award.updateData(data.getName(), data.getYear(), data.getCategory());
-        return new ResponseDto.SuccessBuilder<>("수정 성공", null).build();
+        return NewResponseDto.builder().code(HttpStatus.OK).time(LocalDateTime.now()).message("수정 성공").build();
     }
     @Transactional
-    public ResponseDto<?> deleteAward(Long seq){
+    public NewResponseDto deleteAward(Long seq){
         AwardInfoEntity award = awardRepo.findById(seq).orElseThrow(() -> new NotFoundEntityException("상"));
         awardRepo.delete(award);
-        return new ResponseDto.SuccessBuilder<>("삭제 성공", null).build();
+        return NewResponseDto.builder().code(HttpStatus.OK).time(LocalDateTime.now()).message("조회 성공").build();
     }
 }

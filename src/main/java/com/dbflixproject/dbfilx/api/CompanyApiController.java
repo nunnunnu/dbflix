@@ -1,5 +1,7 @@
 package com.dbflixproject.dbfilx.api;
 
+import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
+import com.dbflixproject.dbfilx.dto.NewResponseDto;
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyDetailDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyInsertDto;
@@ -17,23 +19,23 @@ public class CompanyApiController {
     private final CompanyService companyService;
 
     @PostMapping()
-    public ResponseEntity<ResponseDto<?>> insertCompany(@RequestBody @Valid CompanyInsertDto data){
-        ResponseDto<?> response = companyService.insertCompany(data);
+    public ResponseEntity<NewResponseDto> insertCompany(@RequestBody @Valid CompanyInsertDto data){
+        NewResponseDto response = companyService.insertCompany(data);
         return new ResponseEntity<>(response, response.getCode());
     }
     @GetMapping("/{seq}")
-    public ResponseEntity<ResponseDto<CompanyDetailDto>> getCompanyDetailInfo(@PathVariable Long seq){
-        ResponseDto<CompanyDetailDto> response = companyService.getCompanyDetail(seq);
+    public ResponseEntity<NewResponseDataDto<CompanyDetailDto>> getCompanyDetailInfo(@PathVariable Long seq){
+        NewResponseDataDto<CompanyDetailDto> response = companyService.getCompanyDetail(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
     @DeleteMapping("/{seq}")
-    public ResponseEntity<ResponseDto<?>> deleteCompany(@PathVariable Long seq){
-        ResponseDto<?> response = companyService.deleteCompany(seq);
+    public ResponseEntity<NewResponseDto> deleteCompany(@PathVariable Long seq){
+        NewResponseDto response = companyService.deleteCompany(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
     @PutMapping("/{seq}")
-    public ResponseEntity<ResponseDto> updateCompany(@PathVariable Long seq, @RequestBody @Valid CompanyUpdateDto data){
-        ResponseDto<?> response = companyService.updateCompany(seq, data);
+    public ResponseEntity<NewResponseDto> updateCompany(@PathVariable Long seq, @RequestBody @Valid CompanyUpdateDto data){
+        NewResponseDto response = companyService.updateCompany(seq, data);
         return new ResponseEntity<>(response, response.getCode());
     }
 }

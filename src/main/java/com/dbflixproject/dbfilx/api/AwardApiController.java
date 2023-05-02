@@ -1,5 +1,6 @@
 package com.dbflixproject.dbfilx.api;
 
+import com.dbflixproject.dbfilx.dto.NewResponseDto;
 import com.dbflixproject.dbfilx.dto.award.AwardInsertDto;
 import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.award.AwardUpdateDto;
@@ -16,18 +17,18 @@ public class AwardApiController {
     private final AwardService awardService;
 
     @PostMapping()
-    public ResponseEntity<ResponseDto<?>> insertAward(@Valid @RequestBody AwardInsertDto data){
-        ResponseDto<?> response = awardService.insertAward(data);
+    public ResponseEntity<NewResponseDto> insertAward(@Valid @RequestBody AwardInsertDto data){
+        NewResponseDto response = awardService.insertAward(data);
         return new ResponseEntity<>(response, response.getCode());
     }
     @PutMapping("/{seq}")
-    public ResponseEntity<ResponseDto<?>> updateAward(@PathVariable Long seq, @Valid @RequestBody AwardUpdateDto data){
-        ResponseDto<?> response = awardService.updateAward(seq, data);
+    public ResponseEntity<NewResponseDto> updateAward(@PathVariable Long seq, @Valid @RequestBody AwardUpdateDto data){
+        NewResponseDto response = awardService.updateAward(seq, data);
         return new ResponseEntity<>(response, response.getCode());
     }
     @DeleteMapping("/{seq}")
-    public ResponseEntity<ResponseDto<?>> deleteAward(@PathVariable Long seq){
-        ResponseDto<?> response = awardService.deleteAward(seq);
+    public ResponseEntity<NewResponseDto> deleteAward(@PathVariable Long seq){
+        NewResponseDto response = awardService.deleteAward(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
 }
