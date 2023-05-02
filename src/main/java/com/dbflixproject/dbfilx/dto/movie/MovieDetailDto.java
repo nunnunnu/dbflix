@@ -41,7 +41,7 @@ public class MovieDetailDto {
         this.company = new CompanyInfoDto(entity.getCompany());
         this.rate = rate;
 
-        this.role = creator.stream().map((c)->new MovieRoleDto(c)).collect(Collectors.toList());
+        this.role = creator.stream().map(MovieRoleDto::new).collect(Collectors.toList());
         this.award = award.stream().map((a)->new AwardInfoDto(a.getAward())).collect(Collectors.toList());
     }
 }

@@ -24,6 +24,6 @@ public class CompanyDetailDto {
         this.name = entity.getComName();
         this.businessNum = entity.getComBusinessNum();
         this.address = entity.getComAddress();
-        createMovie = movies.stream().map(m->new MovieInfoDto(m)).collect(Collectors.toList());
+        createMovie = movies.stream().map(MovieInfoDto::new).collect(Collectors.toList());
     }
 }

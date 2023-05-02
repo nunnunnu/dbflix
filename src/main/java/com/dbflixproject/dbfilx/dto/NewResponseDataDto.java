@@ -1,12 +1,10 @@
 package com.dbflixproject.dbfilx.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.aspectj.apache.bcel.classfile.Code;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewResponseDataDto<T> extends NewResponseDto{

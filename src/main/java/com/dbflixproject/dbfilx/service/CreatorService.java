@@ -1,16 +1,7 @@
 package com.dbflixproject.dbfilx.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
 import com.dbflixproject.dbfilx.dto.NewResponseDto;
-import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.creator.CreatorDetailDto;
 import com.dbflixproject.dbfilx.dto.creator.CreatorInsertDto;
 import com.dbflixproject.dbfilx.dto.creator.CreatorUpdateDto;
@@ -23,8 +14,11 @@ import com.dbflixproject.dbfilx.repository.AwardInfoRepository;
 import com.dbflixproject.dbfilx.repository.CreatorAwardConnectionRepository;
 import com.dbflixproject.dbfilx.repository.CreatorInfoRepository;
 import com.dbflixproject.dbfilx.repository.CreatorMovieConnectionRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +57,7 @@ public class CreatorService {
         CreatorAwardConnectionEntity connect = new CreatorAwardConnectionEntity(null, creator, award);
         cAwardRepo.save(connect);
 
-        return NewResponseDto.success("등록성공");
+        return NewResponseDto.success("등록");
     }
     @Transactional
     public NewResponseDto updateCreatorInfo(Long seq, CreatorUpdateDto data){
@@ -71,20 +65,20 @@ public class CreatorService {
         creator.updateCreatorData(data.getName(), data.getCountry(), data.getAge(), data.getGen());
         creatorRepo.save(creator);
 
-        return NewResponseDto.success("수정성공");
+        return NewResponseDto.success("수정");
     }
     @Transactional
     public NewResponseDto deleteCreator(Long seq) {
         CreatorInfoEntity creator = creatorRepo.findById(seq).orElseThrow(()->new NotFoundEntityException("영화인"));
         creatorRepo.delete(creator);
 
-        return NewResponseDto.success("삭제성공");
+        return NewResponseDto.success("삭제");
     }
     @Transactional
     public NewResponseDto deleteCreatorAward(Long seq) {
         CreatorAwardConnectionEntity awardConnection = cAwardRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("영화인 상"));
         cAwardRepo.delete(awardConnection);
 
-        return NewResponseDto.success("삭제성공");
+        return NewResponseDto.success("삭제");
     }
 }

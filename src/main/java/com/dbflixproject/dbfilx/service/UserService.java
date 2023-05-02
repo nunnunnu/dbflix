@@ -2,7 +2,6 @@ package com.dbflixproject.dbfilx.service;
 
 import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
 import com.dbflixproject.dbfilx.dto.NewResponseDto;
-import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.user.UserDetailDto;
 import com.dbflixproject.dbfilx.dto.user.UserJoinDto;
 import com.dbflixproject.dbfilx.dto.user.UserUpdateDto;
@@ -24,7 +23,7 @@ public class UserService {
     @Transactional
     public NewResponseDto userJoin(UserJoinDto data, MultipartFile file){
         if(userRepo.existsByUiId(data.getId())){
-            return new NewResponseDto("이미 등록된 아이디입니다.", HttpStatus.BAD_REQUEST);
+            return NewResponseDto.fail("이미 등록된 아이디입니다.");
         }
         UserInfoEntity user = new UserInfoEntity();
         if(file!=null){
@@ -35,7 +34,7 @@ public class UserService {
 
         userRepo.save(user);
 
-        return new NewResponseDto("회원 가입 성공", HttpStatus.OK);
+        return NewResponseDto.success("회원가입");
     }
 
     @Transactional(readOnly = true)
@@ -43,7 +42,7 @@ public class UserService {
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true).orElseThrow(()->new NotFoundEntityException("회원"));
 
         UserDetailDto userDto = new UserDetailDto(user);
-        return new NewResponseDataDto<>("조회 성공", HttpStatus.OK, userDto);
+        return NewResponseDataDto.success("조회", userDto);
     }
 
     @Transactional
@@ -51,7 +50,7 @@ public class UserService {
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true).orElseThrow(()->new NotFoundEntityException("회원"));
 
         if(!user.getUiPwd().equals(data.getOriginPwd())){
-            return new NewResponseDto("비밀번호 오류", HttpStatus.BAD_REQUEST);
+            return NewResponseDto.fail("비밀번호 오류");
         }
         if(file!=null){
             String fileName = fileService.saveImageFile(file);
@@ -59,7 +58,7 @@ public class UserService {
         }
         user.changeUserInfo(data.getChangePwd(), data.getEmail(), data.getName(), data.getGen());
 
-        return new NewResponseDto("수정 성공", HttpStatus.OK);
+        return NewResponseDto.success("수정");
     }
 
     @Transactional
@@ -68,6 +67,6 @@ public class UserService {
         user.dropUser();
         userRepo.save(user);
 
-        return new NewResponseDto("탈퇴 성공", HttpStatus.OK);
+        return NewResponseDto.success("탈퇴");
     }
 }

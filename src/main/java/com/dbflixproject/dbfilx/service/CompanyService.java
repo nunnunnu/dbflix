@@ -2,7 +2,6 @@ package com.dbflixproject.dbfilx.service;
 
 import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
 import com.dbflixproject.dbfilx.dto.NewResponseDto;
-import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyDetailDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyInsertDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyUpdateDto;
@@ -12,11 +11,9 @@ import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
 import com.dbflixproject.dbfilx.repository.CompanyInfoRepository;
 import com.dbflixproject.dbfilx.repository.MovieInfoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service

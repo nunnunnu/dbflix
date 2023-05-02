@@ -2,7 +2,6 @@ package com.dbflixproject.dbfilx.service;
 
 import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
 import com.dbflixproject.dbfilx.dto.NewResponseDto;
-import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.review.FavoriteGenreDto;
 import com.dbflixproject.dbfilx.dto.review.ReviewDetailDto;
 import com.dbflixproject.dbfilx.dto.review.ReviewInsertDto;
@@ -16,7 +15,6 @@ import com.dbflixproject.dbfilx.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,13 +34,13 @@ public class ReviewService {
         MovieInfoEntity movie = movieRepo.findById(data.getMovieSeq()).orElseThrow(()->new NotFoundEntityException("영화"));
 
         if(reviewRepo.existsByUserAndMovie(user, movie)){
-            return new NewResponseDto("이미 등록된 리뷰 존재", HttpStatus.BAD_REQUEST);
+            return NewResponseDto.fail("이미 등록된 리뷰 존재");
         }
 
         ReviewInfoEntity review = new ReviewInfoEntity(data.getComment(), data.getRating(), user, movie);
         reviewRepo.save(review);
 
-        return new NewResponseDto("등록 성공", HttpStatus.OK);
+        return NewResponseDto.success("등록");
     }
     @Transactional(readOnly = true)
     public NewResponseDataDto<Page<ReviewDetailDto>> getReview(Long seq, Pageable pageable){
@@ -50,19 +48,22 @@ public class ReviewService {
 
         Page<ReviewInfoEntity> reviewEntity = reviewRepo.findByMovie(movie, pageable);
         Page<ReviewDetailDto> result = reviewEntity.map(ReviewDetailDto::new);
-        return new NewResponseDataDto<>("조회 성공", HttpStatus.OK, result);
+        return NewResponseDataDto.success("조회", result);
     }
     @Transactional(readOnly = true)
-    public ResponseDto<List<FavoriteGenreDto>> myFavoriteGenre(Long seq){
+    public NewResponseDataDto<List<FavoriteGenreDto>> myFavoriteGenre(Long seq){
+        if(!userRepo.existsByUiSeqAndUiStatus(seq, true)){
+            throw new NotFoundEntityException("회원");
+        }
         List<FavoriteGenreDto> result = reviewRepo.favoriteGenre(seq);
-        return new ResponseDto.SuccessBuilder<>("조회 성공", result).build();
+        return NewResponseDataDto.success("조회",result);
 
     }
     @Transactional
     public NewResponseDto deleteReview(Long seq) {
         ReviewInfoEntity review = reviewRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("리뷰"));
         reviewRepo.delete(review);
-        return new NewResponseDto("삭제 성공", HttpStatus.OK);
+        return NewResponseDto.success("삭제");
     }
     @Transactional(readOnly = true)
     public NewResponseDataDto<List<ReviewDetailDto>> myReview(Long seq){
@@ -74,6 +75,6 @@ public class ReviewService {
 //        }
         List<ReviewDetailDto> reviewDto = review.stream().map(ReviewDetailDto::new).toList();
 
-        return new NewResponseDataDto<>("조회 성공", HttpStatus.OK, reviewDto);
+        return NewResponseDataDto.success("조회", reviewDto);
     }
 }

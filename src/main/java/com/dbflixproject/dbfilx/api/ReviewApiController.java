@@ -38,8 +38,8 @@ public class ReviewApiController {
         return new ResponseEntity<>(response, response.getCode());
     }
     @GetMapping("/genre/{seq}")
-    public ResponseEntity<ResponseDto<List<FavoriteGenreDto>>> myFavoriteGenre(@PathVariable Long seq){
-        ResponseDto<List<FavoriteGenreDto>> response = reviewService.myFavoriteGenre(seq);
+    public ResponseEntity<NewResponseDataDto<List<FavoriteGenreDto>>> myFavoriteGenre(@PathVariable Long seq){
+        NewResponseDataDto<List<FavoriteGenreDto>> response = reviewService.myFavoriteGenre(seq);
         return new ResponseEntity<>(response, response.getCode());
     }
     @DeleteMapping("/{seq}")

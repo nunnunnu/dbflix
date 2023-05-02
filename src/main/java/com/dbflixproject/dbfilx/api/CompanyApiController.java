@@ -2,7 +2,6 @@ package com.dbflixproject.dbfilx.api;
 
 import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
 import com.dbflixproject.dbfilx.dto.NewResponseDto;
-import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyDetailDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyInsertDto;
 import com.dbflixproject.dbfilx.dto.company.CompanyUpdateDto;

@@ -2,7 +2,6 @@ package com.dbflixproject.dbfilx.api;
 
 import com.dbflixproject.dbfilx.dto.NewResponseDto;
 import com.dbflixproject.dbfilx.dto.award.AwardInsertDto;
-import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.award.AwardUpdateDto;
 import com.dbflixproject.dbfilx.service.AwardService;
 import jakarta.validation.Valid;

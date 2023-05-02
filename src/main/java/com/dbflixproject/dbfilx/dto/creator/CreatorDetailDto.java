@@ -33,7 +33,7 @@ public class CreatorDetailDto {
         this.country = creator.getCiCountry();
         this.type = creator.getCiRole();
         awards = award.stream().map(a -> new AwardInfoDto(a.getAward())).collect(Collectors.toList());
-        movies = movie.stream().map(m -> new MovieRoleDto(m)).collect(Collectors.toList());
+        movies = movie.stream().map(MovieRoleDto::new).collect(Collectors.toList());
 
     }
 }

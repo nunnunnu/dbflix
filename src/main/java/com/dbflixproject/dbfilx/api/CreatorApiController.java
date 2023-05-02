@@ -2,16 +2,13 @@ package com.dbflixproject.dbfilx.api;
 
 import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
 import com.dbflixproject.dbfilx.dto.NewResponseDto;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.creator.CreatorDetailDto;
 import com.dbflixproject.dbfilx.dto.creator.CreatorInsertDto;
 import com.dbflixproject.dbfilx.dto.creator.CreatorUpdateDto;
 import com.dbflixproject.dbfilx.service.CreatorService;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class CreatorApiController {
         NewResponseDto response = creatorService.saveCreator(data);
         return  new ResponseEntity<>(response, response.getCode());
     }
-    @GetMapping("{seq}")
+    @GetMapping("/{seq}")
     public ResponseEntity<NewResponseDataDto<CreatorDetailDto>> getCreator(@PathVariable Long seq){
         NewResponseDataDto<CreatorDetailDto> response = creatorService.getCreatorDetail(seq);
         return new ResponseEntity<>(response, response.getCode());

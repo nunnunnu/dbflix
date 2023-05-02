@@ -1,14 +1,10 @@
 package com.dbflixproject.dbfilx.service;
 
-import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Calendar;
-
-import com.dbflixproject.dbfilx.exception.NotFoundEntityException;
+import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
 import com.dbflixproject.dbfilx.exception.NotFoundFileException;
+import com.dbflixproject.dbfilx.repository.UserInfoRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -20,11 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbflixproject.dbfilx.entity.user.UserInfoEntity;
-import com.dbflixproject.dbfilx.repository.UserInfoRepository;
-
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Calendar;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +49,7 @@ public class FileService {
         return saveFileName;
     }
 
+    @Transactional(readOnly = true)
     public ResponseEntity<Resource> getImage ( @PathVariable String fileName,
                                                HttpServletRequest request ) throws Exception
     {

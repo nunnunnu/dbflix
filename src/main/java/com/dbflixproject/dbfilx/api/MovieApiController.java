@@ -2,7 +2,6 @@ package com.dbflixproject.dbfilx.api;
 
 import com.dbflixproject.dbfilx.dto.NewResponseDataDto;
 import com.dbflixproject.dbfilx.dto.NewResponseDto;
-import com.dbflixproject.dbfilx.dto.ResponseDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieAddCreatorDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieInsertDto;
 import com.dbflixproject.dbfilx.dto.movie.MovieRankingDto;
