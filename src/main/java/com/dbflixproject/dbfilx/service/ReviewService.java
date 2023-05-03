@@ -57,7 +57,6 @@ public class ReviewService {
         }
         List<FavoriteGenreDto> result = reviewRepo.favoriteGenre(seq);
         return NewResponseDataDto.success("조회",result);
-
     }
     @Transactional
     public NewResponseDto deleteReview(Long seq) {
@@ -69,7 +68,7 @@ public class ReviewService {
     public NewResponseDataDto<List<ReviewDetailDto>> myReview(Long seq){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(seq, true).orElseThrow(()->new NotFoundEntityException("회원"));
 
-        List<ReviewInfoEntity> review = reviewRepo.findByUser(user);
+        List<ReviewInfoEntity> review = reviewRepo.findByUserOrderByRiCreatedDesc(user);
 //        if(review.size()==0){
 //            return new ResponseDto<>("등록된 리뷰 없음", LocalDateTime.now(), false, null, HttpStatus.OK);
 //        }

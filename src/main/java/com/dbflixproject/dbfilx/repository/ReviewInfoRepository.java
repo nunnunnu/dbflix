@@ -26,5 +26,5 @@ public interface ReviewInfoRepository extends JpaRepository<ReviewInfoEntity, Lo
             " group by m.miGenre order by rate desc")
     List<FavoriteGenreDto> favoriteGenre(@Param("seq") Long seq);
     @EntityGraph(attributePaths = {"movie"})
-    List<ReviewInfoEntity> findByUser(UserInfoEntity user);
+    List<ReviewInfoEntity> findByUserOrderByRiCreatedDesc(UserInfoEntity user);
 }
