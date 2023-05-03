@@ -63,7 +63,7 @@ public class CreatorService {
     public NewResponseDto updateCreatorInfo(Long seq, CreatorUpdateDto data){
         CreatorInfoEntity creator = creatorRepo.findById(seq).orElseThrow(()->new NotFoundEntityException("영화인"));
         creator.updateCreatorData(data.getName(), data.getCountry(), data.getAge(), data.getGen());
-        creatorRepo.save(creator);
+//        creatorRepo.save(creator);
 
         return NewResponseDto.success("수정");
     }

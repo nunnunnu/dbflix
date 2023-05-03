@@ -50,7 +50,7 @@ public class CompanyService {
     public NewResponseDto updateCompany(Long seq, CompanyUpdateDto data){
         CompanyInfoEntity company = companyRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("제작사"));
         company.updateData(data.getBusinessNum(),data.getName(),data.getAddress());
-        companyRepo.save(company);
+//        companyRepo.save(company);
         return NewResponseDto.success("수정");
     }
 }

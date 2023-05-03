@@ -78,7 +78,7 @@ public class MovieService {
     public NewResponseDto updateMovie(Long seq, MovieUpdateDto data){
         MovieInfoEntity movie = movieRepo.findById(seq).orElseThrow(()->new NotFoundEntityException("영화"));
         movie.changeData(data.getName(), data.getAttendance(), data.getRegDt(), data.getPrice(), data.getCounty(), data.getGenre());
-        movieRepo.save(movie);
+//        movieRepo.save(movie);
 
         return NewResponseDto.success("수정");
     }
@@ -116,7 +116,7 @@ public class MovieService {
     public NewResponseDto updateMovieRole(Long seq, MovieRole role){
         CreatorMovieConnectionEntity creatorConnection = cMovieRepo.findById(seq).orElseThrow(()-> new NotFoundEntityException("영화-영화인"));
         creatorConnection.updateRole(role);
-        cMovieRepo.save(creatorConnection);
+//        cMovieRepo.save(creatorConnection);
         return NewResponseDto.success("수정");
     }
 }
