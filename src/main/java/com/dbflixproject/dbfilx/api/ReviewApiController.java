@@ -27,7 +27,6 @@ public class ReviewApiController {
         NewResponseDto response = reviewService.insertReview(data);
         return new ResponseEntity<>(response, response.getCode());
     }
-
     @GetMapping("/{seq}")
     public ResponseEntity<NewResponseDataDto<Page<ReviewDetailDto>>> getMovieReview(
             @PathVariable Long seq,

@@ -55,32 +55,20 @@ public class FileService {
     {
         UserInfoEntity user = userRepo.findByUiFile(fileName).orElseThrow(()->new NotFoundFileException());
 
-        Path folderLocation = null;
-
-        folderLocation = Paths.get(profile_img_path);
-        String[] split = fileName.split("\\.");
-        String ext = split[split.length - 1];
-        String exportName = user.getUiUri() + "." + ext;
+        Path folderLocation = Paths.get(profile_img_path);
 
         Path targetFile = folderLocation.resolve(user.getUiFile());
-        Resource r = null;
-        try {
-            r = new UrlResource(targetFile.toUri());
-        } catch (Exception e) {
-            e.printStackTrace();
+        Resource r =  new UrlResource(targetFile.toUri());
+
+        String contentType =  request.getServletContext().getMimeType(r.getFile().getAbsolutePath());
+
+        if (contentType == null) {
+            contentType = "application/octet-stream";
         }
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(r.getFile().getAbsolutePath());
-            if (contentType == null) {
-                contentType = "application/octet-stream";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(exportName, "UTF-8") + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(user.getUiUri(), "UTF-8") + "\"")
                 .body(r);
     }
 }

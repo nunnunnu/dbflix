@@ -65,7 +65,7 @@ public class UserService {
     public NewResponseDto dropUser(Long id){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(id, true).orElseThrow(()->new NotFoundEntityException("회원"));
         user.dropUser();
-        userRepo.save(user);
+//        userRepo.save(user);
 
         return NewResponseDto.success("탈퇴");
     }
