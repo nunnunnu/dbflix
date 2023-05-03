@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class AwardApiController {
     private final AwardService awardService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<NewResponseDto> insertAward(@Valid @RequestBody AwardInsertDto data){
         NewResponseDto response = awardService.insertAward(data);
         return new ResponseEntity<>(response, response.getCode());

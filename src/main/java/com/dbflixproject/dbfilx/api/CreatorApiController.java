@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class CreatorApiController {
     private final CreatorService creatorService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<NewResponseDto> insertCreator(@RequestBody CreatorInsertDto data){
         NewResponseDto response = creatorService.saveCreator(data);
         return  new ResponseEntity<>(response, response.getCode());

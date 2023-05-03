@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserApiController {
     private final UserService userService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<NewResponseDto> userJoin(@Valid UserJoinDto data, @Nullable MultipartFile file){
         NewResponseDto response = userService.userJoin(data, file);
         return new ResponseEntity<>(response, response.getCode());

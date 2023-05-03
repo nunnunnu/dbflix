@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class CompanyApiController {
     private final CompanyService companyService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<NewResponseDto> insertCompany(@RequestBody @Valid CompanyInsertDto data){
         NewResponseDto response = companyService.insertCompany(data);
         return new ResponseEntity<>(response, response.getCode());

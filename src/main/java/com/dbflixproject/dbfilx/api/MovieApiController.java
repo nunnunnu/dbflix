@@ -21,7 +21,7 @@ import java.util.List;
 public class MovieApiController {
     private final MovieService movieService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<NewResponseDto> insertMovie(@Valid @RequestBody MovieInsertDto data){
         NewResponseDto response = movieService.insertMovie(data);
         return new ResponseEntity<>(response, response.getCode());

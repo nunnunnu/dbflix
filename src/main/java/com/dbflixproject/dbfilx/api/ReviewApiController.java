@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/api/review")
 public class ReviewApiController {
     private final ReviewService reviewService;
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<NewResponseDto> insertReview(@RequestBody @Valid ReviewInsertDto data){
         NewResponseDto response = reviewService.insertReview(data);
         return new ResponseEntity<>(response, response.getCode());

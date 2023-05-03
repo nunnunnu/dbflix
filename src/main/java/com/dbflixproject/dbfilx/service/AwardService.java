@@ -23,7 +23,6 @@ public class AwardService {
 
         return NewResponseDto.success("등록");
     }
-
     @Transactional
     public NewResponseDto updateAward(Long seq, AwardUpdateDto data) {
         AwardInfoEntity award = awardRepo.findById(seq).orElseThrow(() -> new NotFoundEntityException("상"));

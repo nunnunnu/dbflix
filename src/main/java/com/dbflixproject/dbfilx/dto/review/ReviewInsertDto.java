@@ -21,8 +21,7 @@ public class ReviewInsertDto {
     @NotBlank(message = "리뷰내용 누락")
     private String comment;
 
-    @NotNull(message = "평점 누락(1~10점 사이)")
     @Min(value = 1, message = "평점은 1~10사이로 입력해주세요")
     @Max(value = 10, message = "평점은 1~10사이로 입력해주세요")
-    private Integer rating;
+    private int rating;
 }

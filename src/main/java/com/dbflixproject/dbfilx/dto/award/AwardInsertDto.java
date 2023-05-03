@@ -15,9 +15,9 @@ public class AwardInsertDto {
     @NotBlank(message = "이름 누락")
     private String name;
 
-    @NotNull(message = "연도 누락(1900년도부터 시작)")
+//    @NotNull(message = "연도 누락(1900년도부터 시작)")
     @Min(value = 1900, message = "1900년도 이후부터 입력 가능합니다")
-    private Integer year;
+    private int year;
 
     @NotNull(message = "카테고리 누락")
     private AwardCategory category;
