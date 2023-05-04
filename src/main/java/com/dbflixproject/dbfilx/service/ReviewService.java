@@ -15,6 +15,7 @@ import com.dbflixproject.dbfilx.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,14 +66,14 @@ public class ReviewService {
         return NewResponseDto.success("삭제");
     }
     @Transactional(readOnly = true)
-    public NewResponseDataDto<List<ReviewDetailDto>> myReview(Long seq){
+    public NewResponseDataDto<Slice<ReviewDetailDto>> myReview(Long seq, Pageable pageable){
         UserInfoEntity user = userRepo.findByUiSeqAndUiStatus(seq, true).orElseThrow(()->new NotFoundEntityException("회원"));
 
-        List<ReviewInfoEntity> review = reviewRepo.findByUserOrderByRiCreatedDesc(user);
+        Slice<ReviewInfoEntity> review = reviewRepo.findByUserOrderByRiCreatedDesc(user, pageable);
 //        if(review.size()==0){
 //            return new ResponseDto<>("등록된 리뷰 없음", LocalDateTime.now(), false, null, HttpStatus.OK);
 //        }
-        List<ReviewDetailDto> reviewDto = review.stream().map(ReviewDetailDto::new).toList();
+        Slice<ReviewDetailDto> reviewDto = review.map(ReviewDetailDto::new);
 
         return NewResponseDataDto.success("조회", reviewDto);
     }
