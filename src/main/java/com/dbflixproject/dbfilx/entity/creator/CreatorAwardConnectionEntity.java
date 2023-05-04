@@ -19,12 +19,10 @@ public class CreatorAwardConnectionEntity {
     private Long cacSeq;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name="cac_ci_seq")
     private CreatorInfoEntity creator;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name="cac_ai_seq")
     private AwardInfoEntity award;
 }

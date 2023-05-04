@@ -18,7 +18,7 @@ public interface ReviewInfoRepository extends JpaRepository<ReviewInfoEntity, Lo
 
     @Query("select avg(r.riRate) from ReviewInfoEntity r where r.movie=:movie")
     Double movieRateAge(@Param("movie") MovieInfoEntity movie);
-
+    @EntityGraph(attributePaths = {"user"})
     Page<ReviewInfoEntity> findByMovie(MovieInfoEntity movie, Pageable page);
 
     @Query("select m.miGenre as genre, avg(r.riRate) as rate from ReviewInfoEntity r join MovieInfoEntity m on m.miSeq=r.movie.miSeq " +

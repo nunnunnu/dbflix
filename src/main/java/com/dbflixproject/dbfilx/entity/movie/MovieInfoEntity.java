@@ -44,7 +44,6 @@ public class MovieInfoEntity {
     private MovieGenre miGenre;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name="mi_com_seq")
     private CompanyInfoEntity company;
 

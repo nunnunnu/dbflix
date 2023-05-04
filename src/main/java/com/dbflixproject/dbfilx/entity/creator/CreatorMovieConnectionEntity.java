@@ -20,12 +20,10 @@ public class CreatorMovieConnectionEntity {
     private Long cmcSeq;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name = "cmc_ci_seq")
     private CreatorInfoEntity creator;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name = "cmc_mi_seq")
     private MovieInfoEntity movie;
 

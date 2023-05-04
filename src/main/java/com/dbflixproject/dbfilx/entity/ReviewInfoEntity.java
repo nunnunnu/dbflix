@@ -32,12 +32,10 @@ public class ReviewInfoEntity {
     private Integer riRate;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name="ri_ui_seq")
     private UserInfoEntity user;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name="ri_mi_seq")
     private MovieInfoEntity movie;
 

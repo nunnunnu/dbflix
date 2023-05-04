@@ -45,7 +45,5 @@ public class CreatorApiController {
     public ResponseEntity<NewResponseDto> deleteCreatorAward(@PathVariable Long seq){
         NewResponseDto response = creatorService.deleteCreatorAward(seq);
         return new ResponseEntity<>(response, response.getCode());
-
     }
-
 }

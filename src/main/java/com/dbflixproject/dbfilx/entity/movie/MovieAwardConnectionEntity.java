@@ -19,12 +19,10 @@ public class MovieAwardConnectionEntity {
     private Long macSeq;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name="mac_mi_seq")
     private MovieInfoEntity movie;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name="mac_ai_seq")
     private AwardInfoEntity award;
 }
